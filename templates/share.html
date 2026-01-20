@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family: sans-serif; max-width: 400px; margin: 40px auto;">
+
+<h3>Share Text</h3>
+<textarea id="inputText" rows="4" style="width:100%;"></textarea>
+<button onclick="storeText()">Generate Code</button>
+<p id="storeResult"></p>
+
+<hr>
+
+<h3>Retrieve Text</h3>
+<input id="codeInput" placeholder="Enter code" style="width:100%;"/>
+<button onclick="retrieveText()">Retrieve</button>
+<p id="retrieveResult"></p>
+
+<script>
+async function storeText() {
+    const text = document.getElementById("inputText").value;
+    const res = await fetch("/store", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text})
+    });
+    const data = await res.json();
+    document.getElementById("storeResult").innerText = "Your code: " + data.code;
+}
+
+async function retrieveText() {
+    const code = document.getElementById("codeInput").value.trim();
+    const res = await fetch("/retrieve?code=" + code);
+    const data = await res.json();
+    document.getElementById("retrieveResult").innerText = data.text || data.error;
+}
+</script>
+
+</body>
+</html>
