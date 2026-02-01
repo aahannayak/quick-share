@@ -1,41 +1,223 @@
 <!DOCTYPE html>
-<html>
-<body style="font-family: sans-serif; max-width: 400px; margin: 40px auto;">
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Share Text</title>
 
-<h3>Share Text</h3>
-<textarea id="inputText" rows="4" style="width:100%;"></textarea>
-<button onclick="storeText()">Generate Code</button>
-<p id="storeResult"></p>
+    <style>
+        :root {
+            --bg: #f5f6fa;
+            --card: #ffffff;
+            --text: #222;
+            --button: #4a6cf7;
+            --button-hover: #3d5be0;
+            --success-bg: #e8f7ee;
+            --success-text: #1d7a3c;
+            --error-bg: #fdecea;
+            --error-text: #b71c1c;
+        }
 
-<hr>
+        body.dark {
+            --bg: #1e1f25;
+            --card: #2a2b31;
+            --text: #e5e5e5;
+            --button: #6d8bff;
+            --button-hover: #5874e6;
+            --success-bg: #1f3b2d;
+            --success-text: #7ddc9a;
+            --error-bg: #4a1f1f;
+            --error-text: #ff9a9a;
+        }
 
-<h3>Retrieve Text</h3>
-<input id="codeInput" placeholder="Enter code" style="width:100%;"/>
-<button onclick="retrieveText()">Retrieve</button>
-<p id="retrieveResult"></p>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: auto;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: background 0.3s;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            margin-top: 8px;
+            box-sizing: border-box;
+            background: var(--card);
+            color: var(--text);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            background: var(--button);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--button-hover);
+        }
+
+        .small-btn {
+            margin-top: 8px;
+            padding: 8px;
+            font-size: 0.9rem;
+            width: auto;
+        }
+
+        .result {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .success {
+            background: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        .error {
+            background: var(--error-bg);
+            color: var(--error-text);
+        }
+
+        #qrContainer {
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <button class="small-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <div class="card">
+        <h2>Share Text</h2>
+        <textarea id="inputText" rows="4" placeholder="Type something to share..."></textarea>
+        <button onclick="storeText()">Generate Code</button>
+        <p id="storeResult"></p>
+        <button id="copyBtn" class="small-btn" style="display:none;" onclick="copyCode()">Copy Code</button>
+        <div id="qrContainer"></div>
+    </div>
+
+    <div class="card">
+        <h2>Retrieve Text</h2>
+        <input id="codeInput" placeholder="Enter code">
+        <button onclick="retrieveText()">Retrieve</button>
+        <p id="retrieveResult"></p>
+    </div>
+
+</div>
 
 <script>
-async function storeText() {
-    const text = document.getElementById("inputText").value;
-    const res = await fetch("/store", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({text})
-    });
-    const data = await res.json();
-    if(data.code === undefined){
-        document.getElementById("storeResult").innerText = "Error: " + data.error;
-    }else{
-        document.getElementById("storeResult").innerText = "Your code: " + data.code;
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+        localStorage.setItem("darkMode", document.body.classList.contains("dark"));
     }
-}
 
-async function retrieveText() {
-    const code = document.getElementById("codeInput").value.trim();
-    const res = await fetch("/retrieve?code=" + code);
-    const data = await res.json();
-    document.getElementById("retrieveResult").innerText = data.text || data.error;
-}
+    // Load saved theme
+    if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+    }
+
+    // Generate QR Code (no external libs)
+    function generateQRCode(text) {
+        const size = 200;
+        const url = "https://api.qrserver.com/v1/create-qr-code/?size=" + size + "x" + size + "&data=" + encodeURIComponent(text);
+        return `<img src="${url}" width="${size}" height="${size}" style="border-radius:8px;">`;
+    }
+
+    // Copy to clipboard
+    function copyCode() {
+        const code = document.getElementById("storeResult").dataset.code;
+        navigator.clipboard.writeText(code);
+        alert("Copied: " + code);
+    }
+
+    // Store text
+    async function storeText() {
+        const text = document.getElementById("inputText").value;
+        const result = document.getElementById("storeResult");
+        const copyBtn = document.getElementById("copyBtn");
+        const qrContainer = document.getElementById("qrContainer");
+
+        result.innerHTML = "";
+        qrContainer.innerHTML = "";
+        copyBtn.style.display = "none";
+
+        const res = await fetch("/store", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ text })
+        });
+
+        const data = await res.json();
+
+        if (!data.code) {
+            result.className = "result error";
+            result.innerText = "Error: " + data.error;
+        } else {
+            result.className = "result success";
+            result.innerText = "Your code: " + data.code;
+            result.dataset.code = data.code;
+
+            copyBtn.style.display = "inline-block";
+
+            qrContainer.innerHTML = generateQRCode(data.code);
+        }
+    }
+
+    // Retrieve text
+    async function retrieveText() {
+        const code = document.getElementById("codeInput").value.trim();
+        const result = document.getElementById("retrieveResult");
+        result.innerHTML = "";
+
+        const res = await fetch("/retrieve?code=" + code);
+        const data = await res.json();
+
+        if (data.text) {
+            result.className = "result success";
+            result.innerText = data.text;
+        } else {
+            result.className = "result error";
+            result.innerText = data.error;
+        }
+    }
 </script>
 
 </body>
