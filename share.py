@@ -1,19 +1,54 @@
+import logging
 import random
 import string
 import time
+import threading
 
 from flask import Flask, request, jsonify, render_template
+
 from flask_cors import CORS
-
 app = Flask(__name__)
+
 CORS(app)
-
 storage = {}  # { code: { "text": "...", "expires": 1234567890 } }
-
 
 def generate_code():
     chars = string.ascii_lowercase + string.digits
     return ''.join(random.choice(chars) for _ in range(4))
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s: %(message)s'
+)
+
+# Metrics
+metrics = {
+    "total_cleanups": 0,
+    "total_expired_removed": 0,
+    "last_cleanup_time": None
+}
+
+
+def cleanup_expired_codes():
+    while True:
+        now = time.time()
+        expired_keys = [code for code, entry in storage.items() if entry["expires"] < now]
+
+        for code in expired_keys:
+            del storage[code]
+
+        # Update metrics
+        metrics["total_cleanups"] += 1
+        metrics["total_expired_removed"] += len(expired_keys)
+        metrics["last_cleanup_time"] = time.time()
+
+        # Logging
+        logging.info(f"Cleanup run: removed {len(expired_keys)} expired codes. "
+                     f"Active codes: {len(storage)}")
+
+        # sleep 5 minutes
+        time.sleep(5 * 60)
 
 
 @app.route("/store", methods=['POST'])
@@ -53,4 +88,7 @@ def indexPage():
 
 
 if __name__ == "__main__":
+    cleanup_thread = threading.Thread(target=cleanup_expired_codes, daemon=True)
+    cleanup_thread.start()
+
     app.run(host="0.0.0.0", port=5000)
