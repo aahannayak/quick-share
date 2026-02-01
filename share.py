@@ -54,6 +54,9 @@ def cleanup_expired_codes():
 @app.route("/store", methods=['POST'])
 def store():
     text = request.json.get("text", "")
+    if len(text) > 5000:
+        return jsonify({"error": "Content Too Large, use less than 5000 characters."}), 413
+
     code = generate_code()
 
     # check for code duplication - generate until we get a free code

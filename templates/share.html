@@ -23,7 +23,11 @@ async function storeText() {
         body: JSON.stringify({text})
     });
     const data = await res.json();
-    document.getElementById("storeResult").innerText = "Your code: " + data.code;
+    if(data.code === undefined){
+        document.getElementById("storeResult").innerText = "Error: " + data.error;
+    }else{
+        document.getElementById("storeResult").innerText = "Your code: " + data.code;
+    }
 }
 
 async function retrieveText() {
