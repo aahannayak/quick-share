@@ -20,6 +20,11 @@ def generate_code():
 def store():
     text = request.json.get("text", "")
     code = generate_code()
+
+    # check for code duplication - generate until we get a free code
+    while code in storage:
+        code = generate_code()
+
     expires = time.time() + 2 * 60 * 60  # 2 hours
 
     storage[code] = {"text": text, "expires": expires}
