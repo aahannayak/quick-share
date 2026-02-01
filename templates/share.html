@@ -82,6 +82,10 @@
             font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
         }
 
         button:hover {
@@ -116,6 +120,28 @@
             margin-top: 15px;
             text-align: center;
         }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--button);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
     </style>
 </head>
 
@@ -129,7 +155,15 @@
         <textarea id="inputText" rows="4" placeholder="Type something to share..."></textarea>
         <button onclick="storeText()">Generate Code</button>
         <p id="storeResult"></p>
-        <button id="copyBtn" class="small-btn" style="display:none;" onclick="copyCode()">Copy Code</button>
+
+        <!-- Copy Code Button with Icon -->
+        <button id="copyBtn" class="small-btn" style="display:none;" onclick="copyCode()">
+            <svg width="16" height="16" fill="white" viewBox="0 0 24 24">
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
+            </svg>
+            Copy Code
+        </button>
+
         <div id="qrContainer"></div>
     </div>
 
@@ -138,37 +172,47 @@
         <input id="codeInput" placeholder="Enter code">
         <button onclick="retrieveText()">Retrieve</button>
         <p id="retrieveResult"></p>
+
+        <!-- NEW: Copy Retrieved Data Button -->
+        <button id="copyDataBtn" class="small-btn" style="display:none;" onclick="copyRetrievedData()">
+            <svg width="16" height="16" fill="white" viewBox="0 0 24 24">
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
+            </svg>
+            Copy Data
+        </button>
     </div>
 
 </div>
 
 <script>
-    // Dark Mode Toggle
     function toggleDarkMode() {
         document.body.classList.toggle("dark");
         localStorage.setItem("darkMode", document.body.classList.contains("dark"));
     }
 
-    // Load saved theme
     if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("dark");
     }
 
-    // Generate QR Code (no external libs)
     function generateQRCode(text) {
         const size = 200;
         const url = "https://api.qrserver.com/v1/create-qr-code/?size=" + size + "x" + size + "&data=" + encodeURIComponent(text);
         return `<img src="${url}" width="${size}" height="${size}" style="border-radius:8px;">`;
     }
 
-    // Copy to clipboard
     function copyCode() {
         const code = document.getElementById("storeResult").dataset.code;
         navigator.clipboard.writeText(code);
-        alert("Copied: " + code);
+        showToast("Code copied!");
     }
 
-    // Store text
+    function copyRetrievedData() {
+        const text = document.getElementById("retrieveResult").innerText;
+        navigator.clipboard.writeText(text);
+        showToast("Data copied!");
+
+    }
+
     async function storeText() {
         const text = document.getElementById("inputText").value;
         const result = document.getElementById("storeResult");
@@ -195,17 +239,19 @@
             result.innerText = "Your code: " + data.code;
             result.dataset.code = data.code;
 
-            copyBtn.style.display = "inline-block";
+            copyBtn.style.display = "inline-flex";
 
             qrContainer.innerHTML = generateQRCode(data.code);
         }
     }
 
-    // Retrieve text
     async function retrieveText() {
         const code = document.getElementById("codeInput").value.trim();
         const result = document.getElementById("retrieveResult");
+        const copyDataBtn = document.getElementById("copyDataBtn");
+
         result.innerHTML = "";
+        copyDataBtn.style.display = "none";
 
         const res = await fetch("/retrieve?code=" + code);
         const data = await res.json();
@@ -213,12 +259,24 @@
         if (data.text) {
             result.className = "result success";
             result.innerText = data.text;
+            copyDataBtn.style.display = "inline-flex";
         } else {
             result.className = "result error";
             result.innerText = data.error;
         }
     }
-</script>
 
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2000); // fade out after 2 seconds
+    }
+
+</script>
+<div id="toast" class="toast">Copied!</div>
 </body>
 </html>
