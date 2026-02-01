@@ -29,6 +29,23 @@ metrics = {
     "last_cleanup_time": None
 }
 
+def run_cleanup_once():
+    now = time.time()
+    expired_keys = [code for code, entry in storage.items() if entry["expires"] < now]
+
+    for code in expired_keys:
+        del storage[code]
+
+    # Update metrics
+    metrics["total_cleanups"] += 1
+    metrics["total_expired_removed"] += len(expired_keys)
+    metrics["last_cleanup_time"] = time.time()
+
+    # Logging
+    logging.info(f"Cleanup run: removed {len(expired_keys)} expired codes. "
+                 f"Active codes: {len(storage)}")
+
+    return len(expired_keys)
 
 def cleanup_expired_codes():
     while True:
@@ -50,6 +67,14 @@ def cleanup_expired_codes():
         # sleep 5 minutes
         time.sleep(5 * 60)
 
+@app.route("/cleanup", methods=["GET", "POST"])
+def cleanup_endpoint():
+    removed = run_cleanup_once()
+    return jsonify({"removed": removed, "active_codes": len(storage)})
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok", "active_codes": len(storage)})
 
 @app.route("/store", methods=['POST'])
 def store():
