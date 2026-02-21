@@ -111,7 +111,7 @@ def retrieve():
 
 
 @app.route("/share.html", methods=['GET'])
-def indexPage():
+def sharePage():
     return render_template('share.html')
 
 @app.route("/", methods=['GET'])
