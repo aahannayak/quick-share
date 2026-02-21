@@ -114,6 +114,10 @@ def retrieve():
 def indexPage():
     return render_template('share.html')
 
+@app.route("/", methods=['GET'])
+def indexPage():
+    return render_template('share.html')
+
 
 if __name__ == "__main__":
     cleanup_thread = threading.Thread(target=cleanup_expired_codes, daemon=True)
