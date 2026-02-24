@@ -129,9 +129,13 @@
         const loadPromises = topicFiles.map(file => {
             return new Promise((resolve) => {
                 const script = document.createElement('script');
-                script.src = file;
+                // IMPORTANT: Add /static/ before the filename
+                script.src = `/static/${file}`; 
                 script.onload = resolve;
-                script.onerror = resolve; // Continue even if one file is missing
+                script.onerror = () => {
+                    console.error("Could not load:", file);
+                    resolve(); // Resolve anyway so the app doesn't hang
+                };
                 document.head.appendChild(script);
             });
         });
