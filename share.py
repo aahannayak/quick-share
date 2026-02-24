@@ -115,7 +115,7 @@ def sharePage():
     return render_template('share.html')
 
 @app.route("/quiz.html", methods=['GET'])
-def sharePage():
+def quizPage():
     return render_template('quiz.html')
 
 @app.route("/", methods=['GET'])
