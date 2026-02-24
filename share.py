@@ -114,6 +114,10 @@ def retrieve():
 def sharePage():
     return render_template('share.html')
 
+@app.route("/quiz.html", methods=['GET'])
+def sharePage():
+    return render_template('quiz.html')
+
 @app.route("/", methods=['GET'])
 def indexPage():
     return render_template('share.html')
