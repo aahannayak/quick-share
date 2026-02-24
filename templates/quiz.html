@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMaster Pro | Multi-Topic Science Arena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com"/>
+    <script src="https://cdn.jsdelivr.net"></script>
+    <style>
+        :root { --primary: #6366f1; --success: #22c55e; --error: #ef4444; --dark: #1e293b; --gold: #f59e0b; --report: #06b6d4; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #4338ca 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; color: white; padding: 10px; box-sizing: border-box; }
+        .glass { background: rgba(255, 255, 255, 0.98); color: var(--dark); padding: 30px; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); width: 100%; max-width: 500px; text-align: center; }
+        .hidden { display: none; }
+        .btn { width: 100%; padding: 14px; margin: 8px 0; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: all 0.2s; }
+        .btn-main { background: var(--primary); color: white; box-shadow: 0 4px 0px #4338ca; }
+        .btn-report { background: var(--report); color: white; box-shadow: 0 4px 0px #0891b2; margin-top: 15px; }
+        .btn-main:active, .btn-report:active { transform: translateY(2px); box-shadow: 0 2px 0px #333; }
+        .option-btn { background: #f8fafc; color: var(--dark); border: 2px solid #e2e8f0; text-align: left; padding-left: 20px; outline: none; }
+        .correct { background: var(--success) !important; color: white; border-color: #16a34a; }
+        .wrong { background: var(--error) !important; color: white; border-color: #dc2626; }
+        .stats-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; font-weight: bold; color: #64748b; }
+        .leaderboard-box { background: #f1f5f9; border-radius: 15px; padding: 15px; margin-top: 20px; text-align: left; max-height: 150px; overflow-y: auto; }
+        .leader-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+        input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #e2e8f0; margin-bottom: 15px; box-sizing: border-box; font-size: 1rem; }
+        .progress-bar { height: 6px; background: #e2e8f0; border-radius: 10px; margin-bottom: 20px; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.2s; }
+    </style>
+</head>
+<body>
+
+<div id="app" class="glass animate__animated animate__zoomIn">
+    <!-- Screen 1: Login -->
+    <div id="login-screen">
+        <h1 style="margin:0">BioMaster🧬</h1>
+        <p style="color: #64748b; margin-bottom: 25px;">Scientific Excellence Arena</p>
+        <input type="text" id="username" placeholder="Student Name">
+        <button class="btn btn-main" onclick="initApp()">Enter Arena</button>
+        <p id="loading-msg" style="font-size: 0.8rem; color: var(--primary); font-weight: bold;"></p>
+    </div>
+
+    <!-- Screen 2: Subject Selector -->
+    <div id="subject-screen" class="hidden">
+        <h2 id="welcome-msg" style="margin-top:0"></h2>
+        <div id="subject-list" style="max-height: 300px; overflow-y: auto; padding-right: 5px;"></div>
+        <button class="btn btn-report" onclick="downloadReport()">📊 Download Study Report</button>
+        <div class="leaderboard-box">
+            <strong style="font-size: 0.85rem;">🏆 Global Leaderboard</strong>
+            <div id="leaderboard-content"></div>
+        </div>
+        <button class="btn" style="background: transparent; color: #94a3b8; font-size: 0.7rem;" onclick="clearMemory()">Reset All Data</button>
+    </div>
+
+    <!-- Screen 3: Quiz Engine -->
+    <div id="quiz-screen" class="hidden">
+        <div class="stats-row">
+            <span id="cur-sub-title" style="color: var(--primary); text-transform: uppercase; letter-spacing: 1px;"></span>
+            <span>⏱ <span id="timer">00:00</span></span>
+        </div>
+        
+        <!-- Enhanced Progress Section -->
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: #64748b; font-weight: bold;">
+            <span>Question <span id="current-q-num">0</span> of <span id="total-q-num">0</span></span>
+            <span><span id="remaining-q-num">0</span> Remaining</span>
+        </div>
+        
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        
+        <h3 id="question-text" class="animate__animated animate__fadeIn"></h3>
+        <div id="options-list"></div>
+    </div>
+
+
+    <!-- Screen 4: Results -->
+    <div id="result-screen" class="hidden">
+        <h2 id="result-title">Quiz Finished!</h2>
+        <div id="score-display" style="font-size: 3.5rem; font-weight: 900; color: var(--primary); margin: 10px 0;">0%</div>
+        <p id="time-display" style="font-weight: bold; color: #64748b;"></p>
+        <p id="new-record" class="hidden" style="color: var(--gold); font-weight: bold; margin-bottom: 20px;">🎊 NEW PERSONAL RECORD! 🎊</p>
+        
+        <!-- Review Button -->
+        <button id="session-review-btn" class="btn" style="background: #f1f5f9; color: var(--dark); border: 2px solid #e2e8f0;" onclick="toggleSessionReview()">🔍 Review This Session's Mistakes</button>
+        
+        <!-- Session Review List (Hidden by default) -->
+        <div id="session-review-box" class="hidden animate__animated animate__fadeIn" style="text-align: left; background: #fff1f2; padding: 15px; border-radius: 12px; margin-top: 15px; max-height: 250px; overflow-y: auto; border: 1px solid #fecaca;">
+            <strong style="color: var(--error); font-size: 0.9rem;">Session Corrections:</strong>
+            <div id="session-review-list" style="font-size: 0.85rem; margin-top: 10px; color: #333;"></div>
+        </div>
+
+        <button class="btn btn-main" onclick="showSubjects()" style="margin-top: 20px;">Back to Menu</button>
+        <button class="btn btn-report" onclick="downloadReport()">Download Full Progress Report</button>
+    </div>
+
+</div>
+
+<script>
+    // 1. LIST ALL YOUR FILENAMES HERE
+    const topicFiles = [
+        'Atmospheric Changes.js',
+		'Bacteria.js',
+		'Biomes.js',
+		'Body Systems.js',
+		'Cell Theory.js',
+		'Chemical Reactions.js',
+		'Climate Change.js',
+		'Electricity.js',
+		'Energy Forms.js',
+		'Evolution.js',
+		'Fossils.js',
+		'Laws of Motion.js',
+		'Life Processes.js',
+		'Magnetism.js',
+		'Matter.js',
+		'Orbits.js',
+		'Periodic Table.js',
+		'Plate Tectonics.js',
+		'Tides.js',
+		'Waves.js'
+    ];
+
+    window.quizData = {}; // Master Object
+    let currentUser = "";
+    let currentQuestions = [];
+    let currentIdx = 0, score = 0, seconds = 0, timerInterval;
+    let selectedSubjectName = "";
+
+    // Load scripts dynamically
+    async function loadAllTopics() {
+        document.getElementById('loading-msg').innerText = "Loading Science Modules...";
+        const loadPromises = topicFiles.map(file => {
+            return new Promise((resolve) => {
+                const script = document.createElement('script');
+                script.src = file;
+                script.onload = resolve;
+                script.onerror = resolve; // Continue even if one file is missing
+                document.head.appendChild(script);
+            });
+        });
+        await Promise.all(loadPromises);
+    }
+
+    async function initApp() {
+        const name = document.getElementById('username').value.trim();
+        if (!name) return;
+        currentUser = name;
+
+        await loadAllTopics(); // Wait for all JS files to load
+
+        if (!localStorage.getItem('quiz_leaderboard')) localStorage.setItem('quiz_leaderboard', JSON.stringify([]));
+        if (!localStorage.getItem(`user_${currentUser}`)) {
+            localStorage.setItem(`user_${currentUser}`, JSON.stringify({ trouble: [], bestScores: {} }));
+        }
+        showSubjects();
+    }
+
+    function showSubjects() {
+        hideAll();
+        document.getElementById('subject-screen').classList.remove('hidden');
+        document.getElementById('welcome-msg').innerText = `Welcome, ${currentUser}`;
+        
+        const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+        const list = document.getElementById('subject-list');
+        list.innerHTML = "";
+        
+        // Build menu from loaded window.quizData
+        Object.keys(window.quizData).forEach(sub => {
+            const best = userData.bestScores[sub] ? ` (${userData.bestScores[sub].score}%)` : "";
+            const b = document.createElement('button');
+            b.className = 'btn btn-main animate__animated animate__fadeInUp';
+            b.innerText = sub + best;
+            b.onclick = () => startQuiz(sub);
+            list.appendChild(b);
+        });
+
+        if (userData.trouble.length > 0) {
+            const b = document.createElement('button');
+            b.className = 'btn'; b.style.background = 'var(--gold)'; b.style.color = 'white';
+            b.innerText = `Review Mistakes (${userData.trouble.length})`;
+            b.onclick = () => startQuiz('trouble');
+            list.appendChild(b);
+        }
+        updateLeaderboardDisplay();
+    }
+
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            seconds++;
+            let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            let s = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = `${m}:${s}`;
+        }, 1000);
+    }
+	
+    // Global variable to track mistakes just for the current active quiz
+    let sessionMistakes = [];
+
+    function startQuiz(sub) {
+        hideAll();
+        const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+        selectedSubjectName = sub;
+        currentQuestions = sub === 'trouble' ? [...userData.trouble] : [...window.quizData[sub]];
+        
+        currentQuestions.sort(() => Math.random() - 0.5);
+
+        currentIdx = 0; score = 0; seconds = 0;
+        sessionMistakes = []; // Reset session mistakes
+        
+        document.getElementById('total-q-num').innerText = currentQuestions.length;
+        document.getElementById('cur-sub-title').innerText = sub;
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        startTimer();
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = currentQuestions[currentIdx];
+        const total = currentQuestions.length;
+        const currentNum = currentIdx + 1;
+
+        // Update Text Counters
+        document.getElementById('current-q-num').innerText = currentNum;
+        document.getElementById('remaining-q-num').innerText = total - currentNum;
+        
+        // Update Question Text
+        document.getElementById('question-text').innerText = q.q;
+        
+        // Update Progress Bar
+        // We use (currentIdx / total) * 100 so the bar fills AFTER the answer
+        document.getElementById('progress').style.width = `${(currentIdx / total) * 100}%`;
+        
+        const container = document.getElementById('options-list');
+        container.innerHTML = "";
+        
+        q.o.forEach(opt => {
+            const b = document.createElement('button');
+            b.className = 'btn option-btn animate__animated animate__fadeInUp';
+            b.innerText = opt;
+            b.onclick = (e) => checkAnswer(e.target, opt, q.a);
+            container.appendChild(b);
+        });
+    }
+
+
+    function checkAnswer(btn, choice, correct) {
+        const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        let delay = 0;
+
+        if (choice === correct) {
+            btn.classList.add('correct');
+            score++;
+            userData.trouble = userData.trouble.filter(item => item.q !== currentQuestions[currentIdx].q);
+            delay = 250;
+        } else {
+            btn.classList.add('wrong');
+            document.querySelectorAll('.option-btn').forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+            
+            // Record mistake for the Session Review
+            sessionMistakes.push({
+                q: currentQuestions[currentIdx].q,
+                wrong: choice,
+                right: correct
+            });
+
+            if (!userData.trouble.some(i => i.q === currentQuestions[currentIdx].q)) {
+                userData.trouble.push(currentQuestions[currentIdx]);
+            }
+            delay = 1000;
+        }
+        localStorage.setItem(`user_${currentUser}`, JSON.stringify(userData));
+        setTimeout(() => {
+            currentIdx++;
+            if (currentIdx < currentQuestions.length) showQuestion();
+            else finishQuiz();
+        }, delay);
+    }
+
+
+	
+	function finishQuiz() {
+        clearInterval(timerInterval);
+        hideAll();
+        const percent = Math.round((score / currentQuestions.length) * 100);
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('score-display').innerText = `${percent}%`;
+        document.getElementById('time-display').innerText = `Completed in ${document.getElementById('timer').innerText}`;
+
+        // Handle Review Button visibility
+        const reviewBtn = document.getElementById('session-review-btn');
+        const reviewBox = document.getElementById('session-review-box');
+        reviewBox.classList.add('hidden'); // Ensure box is closed on new result
+        
+        if (sessionMistakes.length > 0) {
+            reviewBtn.classList.remove('hidden');
+            const list = document.getElementById('session-review-list');
+            list.innerHTML = sessionMistakes.map(m => `
+                <div style="margin-bottom:10px; border-bottom:1px solid #fecaca; padding-bottom:5px;">
+                    <strong>Q:</strong> ${m.q}<br>
+                    <span style="color:var(--error)">✘ You chose: ${m.wrong}</span><br>
+                    <span style="color:var(--success)">✔ Correct: ${m.right}</span>
+                </div>
+            `).join('');
+        } else {
+            reviewBtn.classList.add('hidden');
+        }
+
+        if (selectedSubjectName !== 'trouble') saveRecord(percent, seconds, document.getElementById('timer').innerText);
+        if (percent === 100) confetti({ particleCount: 150, spread: 60 });
+    }
+	
+	function toggleSessionReview() {
+        const box = document.getElementById('session-review-box');
+        box.classList.toggle('hidden');
+        if (!box.classList.contains('hidden')) {
+            box.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function saveRecord(score, sec, timeStr) {
+        const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+        const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard'));
+        let isNewBest = false;
+
+        if (!userData.bestScores[selectedSubjectName] || score > userData.bestScores[selectedSubjectName].score) {
+            userData.bestScores[selectedSubjectName] = { score, time: sec, timeStr };
+            isNewBest = true;
+        } else if (score === userData.bestScores[selectedSubjectName].score && sec < userData.bestScores[selectedSubjectName].time) {
+            userData.bestScores[selectedSubjectName].time = sec;
+            userData.bestScores[selectedSubjectName].timeStr = timeStr;
+            isNewBest = true;
+        }
+
+        if (isNewBest) {
+            document.getElementById('new-record').classList.remove('hidden');
+            localStorage.setItem(`user_${currentUser}`, JSON.stringify(userData));
+        }
+        leaderboard.push({ user: currentUser, subject: selectedSubjectName, score, time: sec, timeStr });
+        leaderboard.sort((a, b) => b.score - a.score || a.time - b.time);
+        localStorage.setItem('quiz_leaderboard', JSON.stringify(leaderboard.slice(0, 15)));
+    }
+
+    function downloadReport() {
+        const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
+        let content = `BIOMASTER SCIENCE PROGRESS REPORT\nSTUDENT: ${currentUser}\n-------------------------------------------\n\n`;
+        content += `PERSONAL BESTS:\n`;
+        Object.keys(userData.bestScores).forEach(sub => {
+            content += `- ${sub}: ${userData.bestScores[sub].score}% in ${userData.bestScores[sub].timeStr}\n`;
+        });
+        content += `\nWEAK SPOTS TO REVIEW:\n`;
+        if (userData.trouble.length === 0) content += `None! Mastery achieved.\n`;
+        else userData.trouble.forEach((q, i) => content += `${i + 1}. ${q.q} (Correct Ans: ${q.a})\n`);
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `${currentUser}_Science_Summary.txt`;
+        a.click();
+    }
+
+    function updateLeaderboardDisplay() {
+        const data = JSON.parse(localStorage.getItem('quiz_leaderboard')) || [];
+        const container = document.getElementById('leaderboard-content');
+        container.innerHTML = data.length === 0 ? "No records yet." : data.map((entry, i) => `
+            <div class="leader-item">
+                <span>#${i+1} ${entry.user} (${entry.subject})</span>
+                <span>${entry.score}% - ${entry.timeStr}</span>
+            </div>
+        `).join('');
+    }
+
+    function hideAll() {
+        ['login-screen', 'subject-screen', 'quiz-screen', 'result-screen'].forEach(id => {
+            document.getElementById(id).classList.add('hidden');
+        });
+    }
+
+    function clearMemory() {
+        if(confirm("Delete all scores and history?")) { localStorage.clear(); location.reload(); }
+    }
+</script>
+</body>
+</html>
