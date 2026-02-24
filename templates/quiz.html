@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioMaster Pro | Multi-Topic Science Arena</title>
+    <title>QuizMaster Pro | Multi-Topic Science Questions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com"/>
     <script src="https://cdn.jsdelivr.net"></script>
     <style>
@@ -31,10 +31,10 @@
 <div id="app" class="glass animate__animated animate__zoomIn">
     <!-- Screen 1: Login -->
     <div id="login-screen">
-        <h1 style="margin:0">BioMaster🧬</h1>
-        <p style="color: #64748b; margin-bottom: 25px;">Scientific Excellence Arena</p>
+        <h1 style="margin:0">QuizMaster🏆</h1>
+        <p style="color: #64748b; margin-bottom: 25px;">Scientific Excellence Quiz</p>
         <input type="text" id="username" placeholder="Student Name">
-        <button class="btn btn-main" onclick="initApp()">Enter Arena</button>
+        <button class="btn btn-main" onclick="initApp()">Enter</button>
         <p id="loading-msg" style="font-size: 0.8rem; color: var(--primary); font-weight: bold;"></p>
     </div>
 
@@ -52,15 +52,15 @@
 
     <!-- Screen 3: Quiz Engine -->
     <div id="quiz-screen" class="hidden">
-        <div class="stats-row">
-            <span id="cur-sub-title" style="color: var(--primary); text-transform: uppercase; letter-spacing: 1px;"></span>
+        <div class="stats-row" style="align-items: center;">
+            <button onclick="confirmQuit()" style="background: #fee2e2; color: #991b1b; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; font-weight: bold;">✕ Quit</button>
+            <span id="cur-sub-title" style="color: var(--primary); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;"></span>
             <span>⏱ <span id="timer">00:00</span></span>
         </div>
         
-        <!-- Enhanced Progress Section -->
-        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: #64748b; font-weight: bold;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: #64748b; font-weight: bold; margin-top: 10px;">
             <span>Question <span id="current-q-num">0</span> of <span id="total-q-num">0</span></span>
-            <span><span id="remaining-q-num">0</span> Remaining</span>
+            <span><span id="remaining-q-num">0</span> Left</span>
         </div>
         
         <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
@@ -68,7 +68,6 @@
         <h3 id="question-text" class="animate__animated animate__fadeIn"></h3>
         <div id="options-list"></div>
     </div>
-
 
     <!-- Screen 4: Results -->
     <div id="result-screen" class="hidden">
@@ -373,6 +372,14 @@
         `).join('');
     }
 
+		
+	function confirmQuit() {
+        if (confirm("Are you sure you want to quit this quiz? Your progress for this session won't be saved to the leaderboard.")) {
+            clearInterval(timerInterval); // Stop the clock
+            showSubjects(); // Go back to the menu
+        }
+    }
+
     function hideAll() {
         ['login-screen', 'subject-screen', 'quiz-screen', 'result-screen'].forEach(id => {
             document.getElementById(id).classList.add('hidden');
@@ -385,3 +392,4 @@
 </script>
 </body>
 </html>
+
