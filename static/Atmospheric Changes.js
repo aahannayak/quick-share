@@ -26,7 +26,7 @@ window.quizData["Atmospheric Changes"]= [
 
         // Atmospheric Composition & History
         { q: "What is the most abundant gas in Earth's current atmosphere?", o: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], a: "Nitrogen" },
-        { q: "What percentage of our atmosphere is made of Oxygen?", o: ["78%", "21%", "1%", "50%"], a: "21" },
+        { q: "What percentage of our atmosphere is made of Oxygen?", o: ["78%", "21%", "1%", "50%"], a: "21%" },
         { q: "Was there always oxygen in Earth's atmosphere?", o: ["Yes", "No, it was added later by photosynthesis", "Only in the ocean", "It came from volcanoes"], a: "No, it was added later by photosynthesis" },
         { q: "Which gas shows the most variation in concentration from place to place?", o: ["Nitrogen", "Oxygen", "Water Vapor", "Argon"], a: "Water Vapor" },
         { q: "What are 'Aerosols' in the atmosphere?", o: ["Gases only", "Tiny solid or liquid particles like dust and smoke", "A type of cloud", "High-speed winds"], a: "Tiny solid or liquid particles like dust and smoke" },
@@ -53,3 +53,4 @@ window.quizData["Atmospheric Changes"]= [
         { q: "What happens to the temperature in the troposphere as you go higher?", o: ["It gets hotter", "It stays the same", "It gets colder", "It fluctuates"], a: "It gets colder" },
         { q: "Which gas is needed for photosynthesis but acts as a greenhouse gas?", o: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"], a: "Carbon Dioxide" }
     ];
+
