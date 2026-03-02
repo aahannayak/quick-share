@@ -120,7 +120,7 @@ def quizPage():
 
 @app.route("/", methods=['GET'])
 def indexPage():
-    return render_template('share.html')
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
