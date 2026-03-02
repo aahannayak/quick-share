@@ -1,0 +1,860 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aahan Nayak - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --blue-50: #eff6ff;
+            --blue-200: #bfdbfe;
+            --blue-400: #60a5fa;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --cyan-50: #ecfeff;
+            --green-500: #22c55e;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--slate-800);
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand { font-size: 1.2rem; font-weight: 700; color: var(--slate-800); }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+        .nav-links button {
+            background: none; border: none; cursor: pointer;
+            font-family: inherit; font-size: 0.95rem;
+            color: var(--slate-600); transition: color 0.2s; padding: 0;
+        }
+        .nav-links button:hover { color: var(--slate-900); }
+        .nav-links button.active { color: var(--blue-600); font-weight: 600; }
+
+        .nav-hamburger {
+            display: none; background: none; border: none;
+            cursor: pointer; color: var(--slate-600);
+        }
+
+        .nav-mobile {
+            display: none; background: #fff;
+            border-bottom: 1px solid var(--slate-200);
+            padding: 0.5rem 1rem 1rem;
+        }
+        .nav-mobile.open { display: block; }
+        .nav-mobile button {
+            display: block; width: 100%; text-align: left;
+            padding: 0.5rem 0.75rem; border: none; background: none;
+            font-family: inherit; font-size: 0.95rem; color: var(--slate-600);
+            cursor: pointer; border-radius: 6px; transition: background 0.2s;
+        }
+        .nav-mobile button:hover { background: var(--slate-50); }
+        .nav-mobile button.active { background: var(--blue-50); color: var(--blue-600); font-weight: 600; }
+
+        /* ===== SECTIONS ===== */
+        section { scroll-margin-top: 64px; }
+
+        /* ===== HERO ===== */
+        #home {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 5rem 1.5rem 3rem;
+            background: var(--slate-50);
+        }
+
+        .hero-content { max-width: 800px; width: 100%; text-align: center; }
+
+        .avatar-wrap { position: relative; display: inline-block; margin-bottom: 2rem; }
+
+        .avatar {
+            width: 12rem; height: 12rem; border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3.5rem; font-weight: 700; color: #fff;
+            box-shadow: 0 20px 60px rgba(59,130,246,0.35); margin: 0 auto;
+        }
+
+        .available-badge {
+            position: absolute; bottom: 0; right: -8px;
+            background: var(--green-500); color: #fff;
+            font-size: 0.8rem; font-weight: 600;
+            padding: 0.25rem 0.75rem; border-radius: 9999px;
+            box-shadow: 0 4px 12px rgba(34,197,94,0.4);
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800; color: var(--slate-800); margin-bottom: 1rem;
+        }
+        .hero-content .subtitle { font-size: 1.25rem; color: var(--slate-600); margin-bottom: 1.25rem; }
+        .hero-content .bio {
+            font-size: 1.05rem; color: var(--slate-500);
+            max-width: 580px; margin: 0 auto 2.5rem;
+        }
+		
+		
+        /* Left-aligned intro block matching the screenshot */
+        .hero-intro {
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-heading {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            color: var(--slate-800);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* "Hi, I'm " stays dark, name gets the cyan→blue→purple gradient */
+        .name-gradient {
+            background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 40%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline;
+        }
+
+        .hero-bio {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: var(--slate-600);
+            line-height: 1.75;
+            max-width: 6800px;
+        }
+
+        /* Coloured keyword spans */
+        .kw-cyan   { color: #06b6d4; font-weight: 600; }
+        .kw-orange { color: #f97316; font-weight: 600; }
+        .kw-purple { color: #a855f7; font-weight: 600; }
+
+        .hero-buttons {
+            display: flex; flex-wrap: wrap;
+            justify-content: center; gap: 1rem; margin-bottom: 3rem;
+        }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; border-radius: 10px;
+            font-family: inherit; font-size: 1rem; font-weight: 600;
+            cursor: pointer; text-decoration: none; border: none;
+            transition: all 0.2s; box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+        .btn-dark { background: var(--slate-800); color: #fff; }
+        .btn-dark:hover { background: var(--slate-700); }
+        .btn-blue { background: var(--blue-600); color: #fff; }
+        .btn-blue:hover { background: var(--blue-700); }
+        .btn-outline { background: #fff; color: var(--slate-800); border: 2px solid var(--slate-300); }
+        .btn-outline:hover { border-color: var(--slate-500); }
+
+        .scroll-down {
+            background: none; border: none; cursor: pointer;
+            color: var(--slate-400); transition: color 0.2s;
+            animation: bounce 2s infinite;
+        }
+        .scroll-down:hover { color: var(--slate-600); }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* ===== ABOUT ===== */
+        #about { padding: 5rem 1.5rem; background: #fff; }
+
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            color: var(--slate-800); margin-bottom: 1rem;
+        }
+        .section-header p { font-size: 1.05rem; color: var(--slate-600); max-width: 680px; margin: 0 auto; }
+
+        .about-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+
+        .about-card {
+            padding: 1.75rem; border-radius: 16px;
+            background: linear-gradient(135deg, var(--slate-50), var(--slate-100));
+            border: 1px solid var(--slate-200); transition: box-shadow 0.3s;
+        }
+        .about-card:hover { box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+
+        .about-icon {
+            width: 3rem; height: 3rem; background: var(--blue-600);
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; margin-bottom: 1rem; color: #fff;
+        }
+        .about-card h3 { font-size: 1.15rem; font-weight: 700; color: var(--slate-800); margin-bottom: 0.5rem; }
+        .about-card p { font-size: 0.95rem; color: var(--slate-600); }
+
+        /* ===== SKILLS ===== */
+        #skills { padding: 5rem 1.5rem; background: linear-gradient(135deg, var(--slate-50), var(--slate-100)); }
+
+        .skills-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+        }
+
+        .skill-card {
+            background: #fff; border-radius: 16px; padding: 1.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07); transition: box-shadow 0.3s;
+        }
+        .skill-card:hover { box-shadow: 0 10px 40px rgba(0,0,0,0.12); }
+        .skill-card h3 {
+            font-size: 1.25rem; font-weight: 700; color: var(--slate-800);
+            padding-bottom: 0.5rem; border-bottom: 2.5px solid var(--blue-600);
+            display: inline-block; margin-bottom: 1.25rem;
+        }
+
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .skill-tag {
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, var(--blue-50), var(--cyan-50));
+            color: var(--slate-700); border: 1px solid var(--blue-200);
+            border-radius: 9999px; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .skill-tag:hover { border-color: var(--blue-400); }
+
+        /* ===== PROJECTS ===== */
+        #projects { padding: 5rem 1.5rem; background: #fff; }
+
+        .projects-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+        }
+
+        .project-card {
+            border-radius: 16px; overflow: hidden;
+            border: 1px solid var(--slate-200);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            transition: all 0.3s; background: #fff;
+        }
+        .project-card:hover {
+            box-shadow: 0 16px 48px rgba(0,0,0,0.14);
+            border-color: transparent; transform: translateY(-3px);
+        }
+
+        .project-bar { height: 6px; }
+        .project-body { padding: 1.5rem; }
+
+        .project-icon {
+            width: 3.5rem; height: 3.5rem; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1rem; color: #fff; transition: transform 0.3s;
+        }
+        .project-card:hover .project-icon { transform: scale(1.1); }
+        .project-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--slate-800); margin-bottom: 0.6rem; }
+        .project-body p { font-size: 0.875rem; color: var(--slate-600); line-height: 1.6; margin-bottom: 1rem; }
+
+        .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .project-tag {
+            padding: 0.25rem 0.75rem; background: var(--slate-100);
+            color: var(--slate-700); border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 500;
+        }
+
+        /* gradient helpers */
+        .g-emerald { background: linear-gradient(135deg, #10b981, #0d9488); }
+        .g-blue     { background: linear-gradient(135deg, #3b82f6, #0891b2); }
+        .g-red      { background: linear-gradient(135deg, #ef4444, #e11d48); }
+        .g-amber    { background: linear-gradient(135deg, #f59e0b, #ea580c); }
+        .g-slate    { background: linear-gradient(135deg, #475569, #1e293b); }
+        .g-violet   { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        .hardware-banner {
+            max-width: 1100px; margin: 4rem auto 0;
+            background: linear-gradient(135deg, var(--slate-800), var(--slate-700));
+            border-radius: 16px; padding: 2.5rem; text-align: center; color: #fff;
+        }
+        .hardware-banner svg { margin: 0 auto 1rem; display: block; }
+        .hardware-banner h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .hardware-banner p { color: var(--slate-300); max-width: 560px; margin: 0 auto 1.5rem; }
+        .hardware-note {
+            display: inline-block; background: rgba(0,0,0,0.3);
+            border-radius: 10px; padding: 0.6rem 1.5rem;
+            font-size: 0.875rem; color: var(--slate-300);
+        }
+
+        /* ===== CONTACT ===== */
+        #contact { padding: 5rem 1.5rem; background: linear-gradient(135deg, var(--slate-50), var(--slate-100)); }
+
+        .contact-links {
+            max-width: 900px; margin: 0 auto 2rem;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+        }
+
+        .contact-card {
+            background: #fff; border-radius: 16px; padding: 1.75rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07); text-align: center;
+            text-decoration: none; color: inherit; transition: all 0.3s; display: block;
+        }
+        .contact-card:hover { box-shadow: 0 12px 36px rgba(0,0,0,0.12); transform: translateY(-3px); }
+
+        .contact-icon {
+            width: 4rem; height: 4rem; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1rem; color: #fff; transition: transform 0.3s;
+        }
+        .contact-card:hover .contact-icon { transform: scale(1.1); }
+        .contact-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--slate-800); margin-bottom: 0.4rem; }
+        .contact-card p { font-size: 0.875rem; color: var(--slate-600); word-break: break-all; }
+
+        .opportunity-box {
+            max-width: 900px; margin: 0 auto; background: #fff;
+            border-radius: 16px; padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07); text-align: center;
+        }
+        .opportunity-box h3 { font-size: 1.5rem; font-weight: 800; color: var(--slate-800); margin-bottom: 1rem; }
+        .opportunity-box p { color: var(--slate-600); margin-bottom: 1.75rem; max-width: 620px; margin-left: auto; margin-right: auto; }
+
+        footer { margin-top: 4rem; text-align: center; font-size: 0.875rem; color: var(--slate-500); }
+        footer p + p { margin-top: 0.35rem; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-hamburger { display: flex; }
+            .about-grid, .skills-grid, .projects-grid, .contact-links { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 1024px) {
+            .projects-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* ===== PROJECT STATUS BADGE ===== */
+        .project-header {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; margin-bottom: 1rem;
+        }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.22rem 0.65rem; border-radius: 9999px;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .status-badge::before {
+            content: ''; width: 6px; height: 6px;
+            border-radius: 50%; background: currentColor;
+        }
+        .status-live      { background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; }
+        .status-dev       { background:#fef9c3; color:#a16207; border:1px solid #fde68a; }
+        .status-completed { background:#ede9fe; color:#6d28d9; border:1px solid #ddd6fe; }
+        /* ===== VIEW PROJECT LINK ===== */
+        .project-card { display: flex; flex-direction: column; }
+        .project-body { display: flex; flex-direction: column; flex: 1; }
+        .project-body > p { flex: 1; }
+        .project-link {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            color: var(--blue-600); font-size: 0.875rem; font-weight: 600;
+            text-decoration: none; margin-top: 1rem;
+            transition: gap 0.2s, color 0.2s;
+        }
+        .project-link:hover { color: var(--blue-700); gap: 0.55rem; }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav>
+    <div class="nav-inner">
+        <div class="nav-brand">Aahan Nayak</div>
+        <ul class="nav-links">
+            <li><button onclick="navigateTo('home')" class="active" data-section="home">Home</button></li>
+            <li><button onclick="navigateTo('about')" data-section="about">About</button></li>
+            <li><button onclick="navigateTo('skills')" data-section="skills">Skills</button></li>
+            <li><button onclick="navigateTo('projects')" data-section="projects">Projects</button></li>
+            <li><button onclick="navigateTo('contact')" data-section="contact">Contact</button></li>
+        </ul>
+        <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+            <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+    <div class="nav-mobile" id="mobileMenu">
+        <button onclick="navigateTo('home')" data-section="home">Home</button>
+        <button onclick="navigateTo('about')" data-section="about">About</button>
+        <button onclick="navigateTo('skills')" data-section="skills">Skills</button>
+        <button onclick="navigateTo('projects')" data-section="projects">Projects</button>
+        <button onclick="navigateTo('contact')" data-section="contact">Contact</button>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="home">
+    <div class="hero-content">
+        <div class="avatar-wrap">
+            <div class="avatar">AN</div>
+            <div class="available-badge">Available</div>
+        </div>
+		<div class="hero-intro">
+            <h1 class="hero-heading">
+                Hi, I'm <span class="name-gradient">Aahan Nayak</span>
+            </h1>
+            <p class="hero-bio">
+                A passionate middle school developer exploring the frontiers of
+                <span class="kw-cyan">programming</span>,
+                <span class="kw-orange">robotics</span>, and
+                <span class="kw-purple">artificial intelligence</span>.
+                From building secure messaging platforms to designing IoT mesh networks,
+                I love tackling complex challenges and turning ideas into reality
+            </p>
+        </div>
+        <div class="hero-buttons">
+            <a href="https://github.com/aahannayak" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                GitHub
+            </a>
+            <a href="https://aahannayak.onrender.com" target="_blank" rel="noopener noreferrer" class="btn btn-blue">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Live Projects
+            </a>
+            <a href="mailto:contact@aahannayak.com" class="btn btn-outline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                Get in Touch
+            </a>
+        </div>
+        <button class="scroll-down" onclick="navigateTo('about')" aria-label="Scroll down">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
+        </button>
+    </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+    <div class="section-header">
+        <h2>About <span class="name-gradient">Me</span></h2>
+        <p>I'm a middle school student with a passion for technology, innovation, and creating solutions that make a difference. From building secure messaging platforms to designing IoT mesh networks, I love tackling complex challenges and turning ideas into reality.</p>
+    </div>
+    <div class="about-grid">
+        <div class="about-card">
+            <div class="about-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                </svg>
+            </div>
+            <h3>Full-Stack Development</h3>
+            <p>Building production-ready web applications with Python, PostgreSQL, and modern web technologies</p>
+        </div>
+        <div class="about-card">
+            <div class="about-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2"/>
+                    <rect x="9" y="9" width="6" height="6"/>
+                    <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+                    <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+                    <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
+                    <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
+                </svg>
+            </div>
+            <h3>IoT &amp; Robotics</h3>
+            <p>Creating innovative Arduino and ESP32 projects with mesh networking and real-time control</p>
+        </div>
+        <div class="about-card">
+            <div class="about-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="9" y1="18" x2="15" y2="18"/>
+                    <line x1="10" y1="22" x2="14" y2="22"/>
+                    <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+                </svg>
+            </div>
+            <h3>Problem Solver</h3>
+            <p>Designing end-to-end solutions from concept to deployment on Render.com</p>
+        </div>
+        <div class="about-card">
+            <div class="about-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7"/>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                </svg>
+            </div>
+            <h3>Young Innovator</h3>
+            <p>Middle school student competing in tech contests and pitching to organizations</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+    <div class="section-header">
+        <h2>Technical <span class="name-gradient">Skills</span></h2>
+        <p>A diverse toolkit spanning full-stack development, IoT systems, and emerging technologies</p>
+    </div>
+    <div class="skills-grid">
+        <div class="skill-card">
+            <h3>Web Development</h3>
+            <div class="skill-tags">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">HTML</span>
+                <span class="skill-tag">CSS</span>
+                <span class="skill-tag">PostgreSQL</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <h3>Hardware &amp; IoT</h3>
+            <div class="skill-tags">
+                <span class="skill-tag">Arduino</span>
+                <span class="skill-tag">ESP32</span>
+                <span class="skill-tag">RFID</span>
+                <span class="skill-tag">Servo Control</span>
+                <span class="skill-tag">I2C Communication</span>
+                <span class="skill-tag">Mesh Networking</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <h3>Technologies</h3>
+            <div class="skill-tags">
+                <span class="skill-tag">WebRTC</span>
+                <span class="skill-tag">WebSockets</span>
+                <span class="skill-tag">REST APIs</span>
+                <span class="skill-tag">End-to-End Encryption</span>
+                <span class="skill-tag">Real-time Systems</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <h3>Tools &amp; Platforms</h3>
+            <div class="skill-tags">
+                <span class="skill-tag">Git/GitHub</span>
+                <span class="skill-tag">Render.com</span>
+                <span class="skill-tag">SQlite</span>
+                <span class="skill-tag">IntelliJ</span>
+                <span class="skill-tag">VSCode</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+    <div class="section-header">
+        <h2>Featured <span class="name-gradient">Projects</span></h2>
+        <p>From web applications to IoT systems, here are some highlights from my portfolio</p>
+    </div>
+    <div class="projects-grid">
+
+        <div class="project-card">
+            <div class="project-bar g-emerald"></div>
+            <div class="project-body">
+                <div class="project-header">
+                    <div class="project-icon g-emerald">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge status-live">Live</span>
+                </div>
+                <h3>Secret Text Sharing</h3>
+                <p>Privacy-focused application for sharing sensitive messages. Generates unique 4-digit alphanumeric keys for secure retrieval. Messages auto-delete after 2 hours and are never permanently stored, ensuring complete privacy.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">PostgreSQL</span>
+                    <span class="project-tag">Security</span>
+                    <span class="project-tag">Web</span>
+                </div>
+                <a href="https://www.aahannayak.com/share.html" target="_blank" rel="noopener noreferrer" class="project-link">Launch App <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-bar g-blue"></div>
+            <div class="project-body">
+                <div class="project-header">
+                    <div class="project-icon g-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge status-live">Live</span>
+                </div>
+                <h3>Secure Messaging Platform</h3>
+                <p>End-to-end encrypted messaging application with comprehensive features including message reactions, media sharing (images, files, location), video calls, user blocking, and muting. Built with focus on privacy and security.</p>
+                <div class="project-tags">
+                    <span class="project-tag">E2E Encryption</span>
+                    <span class="project-tag">WebRTC</span>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">PostgreSQL</span>
+                    <span class="project-tag">WebSockets</span>
+                    <span class="project-tag">Encryption</span>
+                    <span class="project-tag">Real-time</span>
+                </div>
+                <a href="https://hello-ycul.onrender.com/" target="_blank" rel="noopener noreferrer" class="project-link">Try App <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-bar g-red"></div>
+            <div class="project-body">
+                <div class="project-header">
+                    <div class="project-icon g-red">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"/>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge status-live">Live</span>
+                </div>
+                <h3>Video Sharing Platform</h3>
+                <p>Video sharing platform with upload, storage, streaming capabilities, and user-friendly interface for content creators.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">PostgreSQL</span>
+                    <span class="project-tag">Video Streaming</span>
+                    <span class="project-tag">Full-Stack</span>
+                    <span class="project-tag">Storage</span>
+                </div>
+                <a href="https://aahannayak.onrender.com" target="_blank" rel="noopener noreferrer" class="project-link">Launch App <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-bar g-amber"></div>
+            <div class="project-body">
+                <div class="project-header">
+                    <div class="project-icon g-amber">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge status-live">Live</span>
+                </div>
+                <h3>STEM Quiz Platform</h3>
+                <p>Interactive quiz application covering climate change, biology, chemistry, physics, space, and periodic table with progress tracking and detailed reports.</p>
+                <div class="project-tags">
+                    <span class="project-tag">JavaScript</span>
+                    <span class="project-tag">PostgreSQL</span>
+                    <span class="project-tag">Education</span>	
+                    <span class="project-tag">Analytics</span>
+                    <span class="project-tag">Interactive</span>
+                </div>
+                <a href="https://www.aahannayak.com/quiz.html" target="_blank" rel="noopener noreferrer" class="project-link">Try App <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-bar g-slate"></div>
+            <div class="project-body">
+                <div class="project-header">
+                    <div class="project-icon g-slate">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge status-completed">Completed</span>
+                </div>
+                <h3>RFID Electronic Safe</h3>
+                <p>Arduino-based sophisticated security system featuring RFID authentication, LCD display, keypad-based locking mechanism with servo-controlled lock. Includes I2C master server communication.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Arduino</span>
+                    <span class="project-tag">RFID</span>
+                    <span class="project-tag">I2C</span>
+                    <span class="project-tag">Servo Control</span>
+                    <span class="project-tag">Security</span>
+                    <span class="project-tag">Embedded</span>
+                </div>
+                <a href="https://github.com/aahannayak" target="_blank" rel="noopener noreferrer" class="project-link">View Code <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-bar g-violet"></div>
+            <div class="project-body">
+                <div class="project-header">
+                    <div class="project-icon g-violet">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                            <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                            <line x1="12" y1="20" x2="12.01" y2="20"/>
+                        </svg>
+                    </div>
+                    <span class="status-badge status-dev">In Development</span>
+                </div>
+                <h3>Mesh Network Flight Simulator</h3>
+                <p>Real-time mesh-based technology demonstration using multiple ESP32 microcontrollers with servo motors, LEDs, magnetometer, and accelerometer sensors. Features a browser-based wireframe airplane that responds to physical sensor movements.</p>
+                <div class="project-tags">
+                    <span class="project-tag">ESP32</span>
+                    <span class="project-tag">Mesh Network</span>
+                    <span class="project-tag">IoT</span>
+                    <span class="project-tag">WebGL</span>
+                    <span class="project-tag">3D Graphics</span>
+                    <span class="project-tag">Realtime</span>
+                </div>
+                <a href="https://github.com/aahannayak" target="_blank" rel="noopener noreferrer" class="project-link">View Project <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hardware-banner">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <rect x="9" y="9" width="6" height="6"/>
+            <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+            <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+            <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
+            <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
+        </svg>
+        <h3>Arduino &amp; Hardware Projects</h3>
+        <p>Watch me in action building and programming Arduino projects, from RFID-controlled servo mechanisms to ESP32 mesh networks with real-time sensor data visualization.</p>
+        <div class="hardware-note">Videos and demonstrations available upon request</div>
+    </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+    <div class="section-header">
+        <h2>Let's <span class="name-gradient">Connect</span></h2>
+        <p>Interested in collaborating on tech competitions or innovative projects? Reach out!</p>
+    </div>
+    <div class="contact-links">
+        <a href="mailto:contact@aahannayak.com" class="contact-card">
+            <div class="contact-icon" style="background: linear-gradient(135deg,#ef4444,#e11d48)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+            </div>
+            <h3>Email</h3>
+            <p>contact@aahannayak.com</p>
+        </a>
+        <a href="https://github.com/aahannayak" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon" style="background: linear-gradient(135deg,#475569,#1e293b)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+            </div>
+            <h3>GitHub</h3>
+            <p>github.com/aahannayak</p>
+        </a>
+        <a href="https://aahannayak.onrender.com" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <div class="contact-icon" style="background: linear-gradient(135deg,#3b82f6,#0891b2)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+            </div>
+            <h3>Live Projects</h3>
+            <p>aahannayak.onrender.com</p>
+        </a>
+    </div>
+    <div class="opportunity-box">
+        <h3>Open to Opportunities</h3>
+        <p>Currently seeking opportunities to participate in tech competitions, collaborate on innovative projects, and connect with organizations passionate about technology and innovation.</p>
+		<div class="project-tags">
+            <span class="project-tag">Arduino</span>
+            <span class="project-tag">ESP32</span>
+            <span class="project-tag">Web</span>
+            <span class="project-tag">Python</span>
+            <span class="project-tag">IoT</span>
+            <span class="project-tag">WebGL</span>
+            <span class="project-tag">3D Graphics</span>
+            <span class="project-tag">Realtime</span>
+			<span class="project-tag">Tech Competitions</span>
+			<span class="project-tag">Collaborative Projects</span>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2026 Aahan Nayak. Built with HTML, CSS, and JavaScript.</p>
+        <p>Designed and developed with passion for innovation.</p>
+    </footer>
+</section>
+
+
+<script>
+    function navigateTo(id) {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('mobileMenu').classList.remove('open');
+        document.getElementById('icon-menu').style.display = '';
+        document.getElementById('icon-close').style.display = 'none';
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById('mobileMenu');
+        const isOpen = menu.classList.toggle('open');
+        document.getElementById('icon-menu').style.display = isOpen ? 'none' : '';
+        document.getElementById('icon-close').style.display = isOpen ? '' : 'none';
+    }
+
+    const sectionIds = ['home', 'about', 'skills', 'projects', 'contact'];
+
+    function updateActive(id) {
+        document.querySelectorAll('[data-section]').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.section === id);
+        });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) updateActive(entry.target.id);
+        });
+    }, { threshold: 0.4 });
+
+    sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+    });
+</script>
+</body>
+</html>
