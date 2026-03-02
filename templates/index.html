@@ -394,6 +394,51 @@
             transition: gap 0.2s, color 0.2s;
         }
         .project-link:hover { color: var(--blue-700); gap: 0.55rem; }
+
+
+
+
+		.border-blue-500 {
+			--tw-border-opacity: 1;
+			border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
+		}
+
+		.border-2 {
+			border-width: 2px;
+		}
+
+		.rounded-full {
+			border-radius: 9999px;
+		}
+
+		.overflow-hidden {
+			overflow: hidden;
+		}
+
+		.w-32 {
+			width: 12rem;
+		}
+
+		.h-32 {
+			height: 12rem;
+		}
+
+		.object-cover {
+			object-fit: cover;
+		}
+
+		.w-full {
+			width: 100%;
+		}
+
+		.h-full {
+			height: 100%;
+		}
+
+		img, video {
+			max-width: 100%;
+			height: auto;
+		}
     </style>
 </head>
 <body>
@@ -431,7 +476,10 @@
 <section id="home">
     <div class="hero-content">
         <div class="avatar-wrap">
-            <div class="avatar">AN</div>
+            <!--<div class="avatar"><img src="aahan.jpg" alt="Aahan Nayak"></div>-->
+			<div class="w-32 h-32 rounded-full border-2 border-blue-500 mb-6 overflow-hidden">
+             <img src="aahan.jpg" alt="Aahan Nayak" class="w-full h-full object-cover">
+			</div>
             <div class="available-badge">Available</div>
         </div>
 		<div class="hero-intro">
