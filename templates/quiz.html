@@ -57,14 +57,14 @@
             <span id="cur-sub-title" style="color: var(--primary); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;"></span>
             <span>⏱ <span id="timer">00:00</span></span>
         </div>
-        
+
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: #64748b; font-weight: bold; margin-top: 10px;">
             <span>Question <span id="current-q-num">0</span> of <span id="total-q-num">0</span></span>
             <span><span id="remaining-q-num">0</span> Left</span>
         </div>
-        
+
         <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-        
+
         <h3 id="question-text" class="animate__animated animate__fadeIn"></h3>
         <div id="options-list"></div>
     </div>
@@ -75,10 +75,10 @@
         <div id="score-display" style="font-size: 3.5rem; font-weight: 900; color: var(--primary); margin: 10px 0;">0%</div>
         <p id="time-display" style="font-weight: bold; color: #64748b;"></p>
         <p id="new-record" class="hidden" style="color: var(--gold); font-weight: bold; margin-bottom: 20px;">🎊 NEW PERSONAL RECORD! 🎊</p>
-        
+
         <!-- Review Button -->
         <button id="session-review-btn" class="btn" style="background: #f1f5f9; color: var(--dark); border: 2px solid #e2e8f0;" onclick="toggleSessionReview()">🔍 Review This Session's Mistakes</button>
-        
+
         <!-- Session Review List (Hidden by default) -->
         <div id="session-review-box" class="hidden animate__animated animate__fadeIn" style="text-align: left; background: #fff1f2; padding: 15px; border-radius: 12px; margin-top: 15px; max-height: 250px; overflow-y: auto; border: 1px solid #fecaca;">
             <strong style="color: var(--error); font-size: 0.9rem;">Session Corrections:</strong>
@@ -95,25 +95,45 @@
     // 1. LIST ALL YOUR FILENAMES HERE
     const topicFiles = [
         'Atmospheric Changes.js',
-		'Bacteria.js',
-		'Biomes.js',
-		'Body Systems.js',
-		'Cell Theory.js',
-		'Chemical Reactions.js',
-		'Climate Change.js',
-		'Electricity.js',
-		'Energy Forms.js',
-		'Evolution.js',
-		'Fossils.js',
-		'Laws of Motion.js',
-		'Life Processes.js',
-		'Magnetism.js',
-		'Matter.js',
-		'Orbits.js',
-		'Periodic Table.js',
-		'Plate Tectonics.js',
-		'Tides.js',
-		'Waves.js'
+        'Atmospheric Changes Advanced.js',
+        'Bacteria.js',
+        'Bacteria_Advanced.js',
+        'Biomes.js',
+        'Biomes Advanced.js',
+        'Body Systems.js',
+        'Body_Systems_Advanced.js',
+        'Cell Theory.js',
+        'Cell_Theory_Advanced.js',
+        'Chemical Reactions.js',
+        'Chemical_Reactions_Advanced.js',
+        'Climate Change.js',
+        'Climate_Change_Advanced.js',
+        'Electricity.js',
+        'Electricity_Advanced.js',
+        'Energy Forms.js',
+        'Energy_Forms_Advanced.js',
+        'Evolution.js',
+        'Evolution_Advanced.js',
+        'Fossils.js',
+        'Fossils_Advanced.js',
+        'Laws of Motion.js',
+        'Laws_of_Motion_Advanced.js',
+        'Life Processes.js',
+        'Life_Processes_Advanced.js',
+        'Magnetism.js',
+        'Magnetism_Advanced.js',
+        'Matter.js',
+        'Matter_Advanced.js',
+        'Orbits.js',
+        'Orbits_Advanced.js',
+        'Periodic Table.js',
+        'Periodic Table Advanced.js',
+        'Plate Tectonics.js',
+        'Plate Tectonics Advanced.js',
+        'Tides.js',
+        'Tides Advanced.js',
+        'Waves.js',
+        'Waves Advanced.js'
     ];
 
     window.quizData = {}; // Master Object
@@ -159,11 +179,11 @@
         hideAll();
         document.getElementById('subject-screen').classList.remove('hidden');
         document.getElementById('welcome-msg').innerText = `Welcome, ${currentUser}`;
-        
+
         const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
         const list = document.getElementById('subject-list');
         list.innerHTML = "";
-        
+
         // Build menu from loaded window.quizData
         Object.keys(window.quizData).forEach(sub => {
             const best = userData.bestScores[sub] ? ` (${userData.bestScores[sub].score}%)` : "";
@@ -194,7 +214,7 @@
             document.getElementById('timer').innerText = `${m}:${s}`;
         }, 1000);
     }
-	
+
     // Global variable to track mistakes just for the current active quiz
     let sessionMistakes = [];
 
@@ -202,13 +222,16 @@
         hideAll();
         const userData = JSON.parse(localStorage.getItem(`user_${currentUser}`));
         selectedSubjectName = sub;
-        currentQuestions = sub === 'trouble' ? [...userData.trouble] : [...window.quizData[sub]];
-        
+        // Deep-copy so we never mutate the source question bank
+        currentQuestions = (sub === 'trouble' ? [...userData.trouble] : [...window.quizData[sub]])
+            .map(q => ({ ...q, o: [...q.o] }));
+
+        // Randomize question order
         currentQuestions.sort(() => Math.random() - 0.5);
 
         currentIdx = 0; score = 0; seconds = 0;
         sessionMistakes = []; // Reset session mistakes
-        
+
         document.getElementById('total-q-num').innerText = currentQuestions.length;
         document.getElementById('cur-sub-title').innerText = sub;
         document.getElementById('quiz-screen').classList.remove('hidden');
@@ -224,18 +247,21 @@
         // Update Text Counters
         document.getElementById('current-q-num').innerText = currentNum;
         document.getElementById('remaining-q-num').innerText = total - currentNum;
-        
+
         // Update Question Text
         document.getElementById('question-text').innerText = q.q;
-        
+
         // Update Progress Bar
         // We use (currentIdx / total) * 100 so the bar fills AFTER the answer
         document.getElementById('progress').style.width = `${(currentIdx / total) * 100}%`;
-        
+
         const container = document.getElementById('options-list');
         container.innerHTML = "";
-        
-        q.o.forEach(opt => {
+
+        // Shuffle a copy of the options so the correct answer position varies each attempt
+        const shuffledOptions = [...q.o].sort(() => Math.random() - 0.5);
+
+        shuffledOptions.forEach(opt => {
             const b = document.createElement('button');
             b.className = 'btn option-btn animate__animated animate__fadeInUp';
             b.innerText = opt;
@@ -258,7 +284,7 @@
         } else {
             btn.classList.add('wrong');
             document.querySelectorAll('.option-btn').forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
-            
+
             // Record mistake for the Session Review
             sessionMistakes.push({
                 q: currentQuestions[currentIdx].q,
@@ -280,8 +306,8 @@
     }
 
 
-	
-	function finishQuiz() {
+
+    function finishQuiz() {
         clearInterval(timerInterval);
         hideAll();
         const percent = Math.round((score / currentQuestions.length) * 100);
@@ -293,7 +319,7 @@
         const reviewBtn = document.getElementById('session-review-btn');
         const reviewBox = document.getElementById('session-review-box');
         reviewBox.classList.add('hidden'); // Ensure box is closed on new result
-        
+
         if (sessionMistakes.length > 0) {
             reviewBtn.classList.remove('hidden');
             const list = document.getElementById('session-review-list');
@@ -311,8 +337,8 @@
         if (selectedSubjectName !== 'trouble') saveRecord(percent, seconds, document.getElementById('timer').innerText);
         if (percent === 100) confetti({ particleCount: 150, spread: 60 });
     }
-	
-	function toggleSessionReview() {
+
+    function toggleSessionReview() {
         const box = document.getElementById('session-review-box');
         box.classList.toggle('hidden');
         if (!box.classList.contains('hidden')) {
@@ -372,8 +398,8 @@
         `).join('');
     }
 
-		
-	function confirmQuit() {
+
+    function confirmQuit() {
         if (confirm("Are you sure you want to quit this quiz? Your progress for this session won't be saved to the leaderboard.")) {
             clearInterval(timerInterval); // Stop the clock
             showSubjects(); // Go back to the menu
