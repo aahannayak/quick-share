@@ -120,12 +120,12 @@ def quizPage():
 
     
 @app.route("/algebra-quiz.html", methods=['GET'])
-def quizPage():
+def quizPage1():
     return render_template('algebra_quiz.html')
 
 
 @app.route("/algebra-quiz2.html", methods=['GET'])
-def quizPage():
+def quizPage2():
     return render_template('algebra_quiz2.html')
 
 @app.route("/", methods=['GET'])
