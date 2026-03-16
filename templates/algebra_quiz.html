@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Algebra 1 Diagnostic – Interactive Quiz</title>
+<meta charset="UTF-8">
+
+<style>
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f5f7fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background: linear-gradient(90deg, #6a5acd, #48c6ef);
+        color: white;
+        padding: 25px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .topic-title {
+        text-align: center;
+        font-size: 26px;
+        margin-top: 20px;
+        color: #444;
+    }
+
+    .page {
+        display: none;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .question {
+        background: white;
+        padding: 18px;
+        margin: 18px 0;
+        border-radius: 12px;
+        border-left: 8px solid #6a5acd;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    }
+
+    .q-text {
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #333;
+    }
+
+    .option {
+        background: #eef2ff;
+        padding: 10px;
+        margin: 6px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        border: 1px solid #d0d7ff;
+    }
+
+    .option:hover {
+        background: #dfe7ff;
+    }
+
+    .correct {
+        background: #c8f7c5 !important;
+        border-color: #8be28b !important;
+    }
+
+    .wrong {
+        background: #f7c5c5 !important;
+        border-color: #e28b8b !important;
+    }
+
+    .feedback {
+        margin-top: 6px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .nav-buttons {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    button {
+        background: #6a5acd;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        margin: 10px;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #5948c0;
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>Algebra 1 Diagnostic – Interactive Quiz</header>
+
+<!-- Topic containers -->
+<div id="topic1" class="page"></div>
+<div id="topic2" class="page"></div>
+<div id="topic3" class="page"></div>
+<div id="topic4" class="page"></div>
+<div id="topic5" class="page"></div>
+<div id="topic6" class="page"></div>
+<div id="topic7" class="page"></div>
+<div id="topic8" class="page"></div>
+
+<div class="nav-buttons">
+    <button onclick="prevPage()">Previous</button>
+    <button onclick="nextPage()">Next</button>
+</div>
+
+<script>
+// -------------------------------
+// QUIZ DATA
+// -------------------------------
+
+let quiz = [
+
+/* -------------------------------
+   TOPIC 1 — Analyzing Graphs
+--------------------------------*/
+{
+    topic: "Topic 1: Analyzing Graphs",
+    questions: [
+        {q:"The point where a graph crosses the x-axis is called the:", 
+         options:["y-intercept","x-intercept","slope","origin"], answer:1},
+
+        {q:"A graph shows a line crossing the y-axis at (0, –3). What is the y-intercept?", 
+         options:["–3"], answer:0},
+
+        {q:"If a graph goes upward from left to right, the function is:", 
+         options:["Increasing","Decreasing","Constant","Zero"], answer:0},
+
+        {q:"A line passes through (0, 2) and (1, 5). Is the function increasing or decreasing?", 
+         options:["Increasing","Decreasing"], answer:0},
+
+        {q:"A graph shows a point at (4, 0). What type of intercept is this?", 
+         options:["x-intercept","y-intercept"], answer:0},
+
+        {q:"A horizontal line at y = 6 has what rate of change?", 
+         options:["0"], answer:0},
+
+        {q:"A line crosses the y-axis at 4 and the x-axis at –2. What is the slope?", 
+         options:["–2","–1","2","1"], answer:1},
+
+        {q:"A decreasing line must have a:", 
+         options:["Positive slope","Negative slope","Zero slope","Undefined slope"], answer:1},
+
+        {q:"A function increases on (–3, 1) and decreases on (1, 5). At x = 1, the function has a:", 
+         options:["Minimum","Maximum","Zero","Intercept"], answer:1},
+
+        {q:"A line passes through (2, 6) and (5, 6). What is the rate of change?", 
+         options:["0"], answer:0},
+
+        {q:"A line with slope 3 and y-intercept –1 must include which point?", 
+         options:["(0, –1)","(1, –1)","(1, 1)","(–1, –4)"], answer:0},
+
+        {q:"A line crosses the x-axis at (3, 0). This means:", 
+         options:["Output is 3 when x = 0","Input is 3 when output = 0","Slope is 3","y-intercept is 3"], answer:1},
+
+        {q:"A line with slope –2:", 
+         options:["Rises 2 per 1 right","Falls 2 per 1 right","Rises 1 per 2 right","Falls 1 per 2 right"], answer:1},
+
+        {q:"A line with positive slope decreases on which interval?", 
+         options:["None","All","Only negative x","Only positive x"], answer:0},
+
+        {q:"Find the rate of change between (–4, 3) and (2, –3).", 
+         options:["–1"], answer:0},
+
+        {q:"A function increases on (–∞, –2), is constant on (–2, 4), and decreases on (4, ∞). The function has a:", 
+         options:["Max at –2","Min at –2","Max at 4","Min at 4"], answer:2},
+
+        {q:"A line with slope 1/2 and y-intercept 4. Which point is NOT on the line?", 
+         options:["(0, 4)","(2, 5)","(4, 6)","(–2, 5)"], answer:3},
+
+        {q:"A line has negative slope and positive y-intercept. Which must be true?", 
+         options:["x-intercept positive","x-intercept negative","x-intercept zero","Never crosses x-axis"], answer:1},
+
+        {q:"A line passes through (1, 7) and (4, 1). Find the x-intercept.", 
+         options:["4.5"], answer:0},
+
+        {q:"A line has slope –3 and passes through (–2, 5). Find the y-intercept.", 
+         options:["–1"], answer:0}
+    ]
+},
+
+/* -------------------------------
+   TOPIC 2 — Exponents & Operations
+--------------------------------*/
+{
+    topic: "Topic 2: Exponents & Exponent Operations",
+    questions: [
+        {q:"Evaluate: 3²", options:["5","6","9","12"], answer:2},
+
+        {q:"Which expression means “3 multiplied by itself 4 times”?", 
+         options:["3²","3³","3⁴","4³"], answer:2},
+
+        {q:"Evaluate: 10¹", options:["10"], answer:0},
+
+        {q:"Which is equal to 2³?", options:["5","6","8","9"], answer:2},
+
+        {q:"Evaluate: 5⁰", options:["0","1","5","Undefined"], answer:1},
+
+        {q:"Simplify: 4² · 4¹", options:["4¹","4²","4³","4⁴"], answer:2},
+
+        {q:"Simplify: x³ · x⁵", options:["x⁸","x¹⁵","x²","x⁵"], answer:0},
+
+        {q:"Simplify: 7⁶ ÷ 7²", options:["7³","7⁴","7²","7⁸"], answer:1},
+
+        {q:"Simplify: (3²)³", options:["3⁵","3⁶","3⁹","3¹²"], answer:2},
+
+        {q:"Evaluate: 2⁻¹", options:["–2","2","1/2","–1/2"], answer:2},
+
+        {q:"Simplify: x⁷ ÷ x³", options:["x¹⁰","x⁴","x³","x⁻⁴"], answer:1},
+
+        {q:"Simplify: (5³)(5⁻¹)", options:["5⁴","5²","5⁻⁴","5⁻²"], answer:1},
+
+        {q:"Evaluate: 4⁻²", options:["1/16","1/8","1/4","16"], answer:0},
+
+        {q:"Simplify: (x²y³)²", options:["x⁴y⁶","x²y⁵","x³y⁶","x⁴y³"], answer:0},
+
+        {q:"Simplify: 6⁵ ÷ 6⁸", options:["6³","6⁻³","6¹³","6⁻¹³"], answer:1},
+
+        {q:"Simplify: (2⁻³)(2⁵)", options:["2⁻⁸","2⁻²","2²","2⁸"], answer:2},
+
+        {q:"Simplify: (x⁴ ÷ x⁻²)²", options:["x⁴","x¹²","x⁸","x⁶"], answer:1},
+
+        {q:"Simplify: (3⁻⁴ · 3²) ÷ 3⁻¹", options:["3⁻⁵","3⁻¹","3⁻³","3¹"], answer:3},
+
+        {q:"Simplify: (a⁻²b³)³", options:["a⁻⁶b⁹","a⁻⁵b⁶","a⁻³b⁹","a⁻⁶b⁶"], answer:0},
+
+        {q:"Simplify: (4³ · 4⁻⁵) ÷ 4⁻¹", options:["4⁻¹","4⁻³","4¹","4³"], answer:2}
+    ]
+},
+/* -------------------------------
+   TOPIC 3 — Graphing
+--------------------------------*/
+{
+    topic: "Topic 3: Graphing",
+    questions: [
+        {q:"Plot the point (3, –2). In which quadrant does it lie?",
+         options:["Quadrant I","Quadrant II","Quadrant III","Quadrant IV"], answer:3},
+
+        {q:"Which point is on the x-axis?",
+         options:["(0, 5)","(4, 0)","(–3, –2)","(2, 2)"], answer:1},
+
+        {q:"Which point is on the y-axis?",
+         options:["(0, –6)","(6, 0)","(–2, –2)","(1, 3)"], answer:0},
+
+        {q:"Which table represents a linear relationship?",
+         options:["1→3, 2→5, 3→7","1→2, 2→4, 3→9","1→1, 2→4, 3→9","1→5, 2→5, 3→5"], answer:0},
+
+        {q:"Which graph represents a linear function?",
+         options:["A straight line","A curved parabola","A circle","A V‑shape"], answer:0},
+
+        {q:"Which point lies in Quadrant II?",
+         options:["(4, 3)","(–4, 3)","(–4, –3)","(4, –3)"], answer:1},
+
+        {q:"Which set of points lies on a line with slope 2?",
+         options:["(0,1),(1,3),(2,5)","(0,1),(1,2),(2,4)","(0,1),(1,4),(2,9)","(0,1),(1,0),(2,–1)"], answer:0},
+
+        {q:"Which graph shows a nonlinear relationship?",
+         options:["A line","A parabola","A line with positive slope","A horizontal line"], answer:1},
+
+        {q:"A graph shows a line passing through (–2, 1) and (2, 5). What is the slope?",
+         options:["1","2","3","4"], answer:1},
+
+        {q:"Which table represents a nonlinear relationship?",
+         options:["1→2, 2→4, 3→6","1→1, 2→4, 3→9","1→5, 2→5, 3→5","1→–1, 2→–2, 3→–3"], answer:1},
+
+        {q:"Which graph represents a constant function?",
+         options:["A horizontal line","A vertical line","A diagonal line","A curved line"], answer:0},
+
+        {q:"Which point lies on the line y = –2x + 3?",
+         options:["(0, 3)","(1, 3)","(–1, –1)","(2, –1)"], answer:0},
+
+        {q:"Which graph shows a function?",
+         options:["A circle","A sideways parabola","A V‑shape","A vertical line"], answer:2},
+
+        {q:"Which table shows a function?",
+         options:["1→2, 1→3","1→2, 2→2","1→2, 2→3, 2→4","1→2, 2→3, 3→4"], answer:3},
+
+        {q:"A graph shows a curve opening upward. Which type of function is it?",
+         options:["Linear","Quadratic","Exponential","Absolute value"], answer:1},
+
+        {q:"Which set of points represents a nonlinear pattern?",
+         options:["(1,2),(2,4),(3,6)","(1,1),(2,4),(3,9)","(1,5),(2,5),(3,5)","(1,–1),(2,–2),(3,–3)"], answer:1},
+
+        {q:"A graph shows a line with slope –3 and y‑intercept 2. Which point is on the line?",
+         options:["(1, –1)","(1, –3)","(1, –2)","(1, 5)"], answer:0},
+
+        {q:"A graph shows a nonlinear curve that increases slowly at first, then rapidly. What type of function is this?",
+         options:["Linear","Quadratic","Exponential","Absolute value"], answer:2},
+
+        {q:"Which graph represents an absolute value function?",
+         options:["A V‑shape","A U‑shape","A straight line","A circle"], answer:0},
+
+        {q:"A graph shows a line passing through (–3, –4) and (1, 8). Which point also lies on the same line?",
+         options:["(2, 10)","(3, 14)","(4, 16)","(5, 20)"], answer:2}
+    ]
+},
+
+/* -------------------------------
+   TOPIC 4 — Linear Equations (Slope‑Intercept Form)
+--------------------------------*/
+{
+    topic: "Topic 4: Linear Equations in Slope‑Intercept Form",
+    questions: [
+        {q:"In the equation y = 4x + 2, what is the slope?",
+         options:["2","4","–4","–2"], answer:1},
+
+        {q:"In the equation y = –3x + 7, what is the y‑intercept?",
+         options:["–3","7","–7","3"], answer:1},
+
+        {q:"Which equation has slope 5?",
+         options:["y = 5x – 1","y = x + 5","y = –5x + 3","y = 1/5 x – 2"], answer:0},
+
+        {q:"Which equation has a y‑intercept of –4?",
+         options:["y = –4x + 1","y = x – 4","y = –2x – 4","Both B and C"], answer:3},
+
+        {q:"What is the slope of the line y = 9?",
+         options:["0","1","Undefined","9"], answer:0},
+
+        {q:"What is the y‑intercept of the line y = –6?",
+         options:["–6","0","6","Undefined"], answer:0},
+
+        {q:"Convert to slope‑intercept form: 2x + y = 10",
+         options:["y = 2x + 10","y = –2x + 10","y = 10 – 2x","Both B and C"], answer:3},
+
+        {q:"Convert to slope‑intercept form: 3y = 12 – 6x",
+         options:["y = 4 – 2x","y = –2x + 4","y = –4 + 2x","Both A and B"], answer:3},
+
+        {q:"Which equation represents a line with slope –2 and y‑intercept 5?",
+         options:["y = –2x + 5","y = 5x – 2","y = 2x – 5","y = –5x + 2"], answer:0},
+
+        {q:"What is the slope of the line 4x – 2y = 8?",
+         options:["–2","2","–4","4"], answer:0},
+
+        {q:"What is the y‑intercept of the line 6x + 3y = 9?",
+         options:["3","–3","9","–9"], answer:0},
+
+        {q:"Which equation has slope 0?",
+         options:["y = 0x + 4","y = 4x + 0","x = 4","y = –4x + 1"], answer:0},
+
+        {q:"Which equation has an undefined slope?",
+         options:["y = 3","x = –2","y = –2x + 3","y = 0x – 5"], answer:1},
+
+        {q:"Convert to slope‑intercept form: 5y + 10 = 15x",
+         options:["y = 3x – 2","y = 3x + 2","y = –3x + 2","y = –3x – 2"], answer:0},
+
+        {q:"A line has slope 3/2 and passes through (0, –4). Which equation represents the line?",
+         options:["y = 3/2 x – 4","y = –3/2 x – 4","y = 2/3 x – 4","y = 3/2 x + 4"], answer:0},
+
+        {q:"Convert to slope‑intercept form: 7x – 2y = 14",
+         options:["y = –7/2 x + 7","y = 7/2 x – 7","y = –7/2 x – 7","y = 7/2 x + 7"], answer:1},
+
+        {q:"A line has slope –4 and passes through (3, 2). What is the y‑intercept?",
+         options:["14"], answer:0},
+
+        {q:"Which equation has slope 1/3 and passes through (–6, 4)?",
+         options:["y = 1/3 x + 6","y = 1/3 x – 6","y = –1/3 x + 6","y = –1/3 x – 6"], answer:0},
+
+        {q:"Convert to slope‑intercept form: 4y – 12 = –8x",
+         options:["y = –2x + 3","y = 2x – 3","y = –2x – 3","y = 2x + 3"], answer:0},
+
+        {q:"A line has slope –5/3 and y‑intercept 9. Which point lies on the line?",
+         options:["(3, 4)","(3, –4)","(–3, 14)","(–3, 4)"], answer:2}
+    ]
+},
+/* -------------------------------
+   TOPIC 5 — Ordering Rational & Irrational Numbers
+--------------------------------*/
+{
+    topic: "Topic 5: Ordering Rational & Irrational Numbers",
+    questions: [
+        {q:"Which number is larger?", options:["0.5","0.7"], answer:1},
+        {q:"Which number is smaller?", options:["–3","–5"], answer:1},
+        {q:"Which is greater?", options:["1/4","1/2"], answer:1},
+        {q:"Which is greater?", options:["0.25","1/5"], answer:0},
+        {q:"Which number is closest to 3?", options:["2.9","3.1","3.01","2.99"], answer:2},
+        {q:"Which number is irrational?", options:["4","3/5","√7","0.75"], answer:2},
+        {q:"Which is greater?", options:["√9","√10"], answer:1},
+        {q:"Which is greater?", options:["√5","2.2"], answer:0},
+        {q:"Order from least to greatest: 1/2, 0.4, 0.55",
+         options:["0.4, 1/2, 0.55","1/2, 0.4, 0.55","0.4, 0.55, 1/2","0.55, 0.4, 1/2"], answer:0},
+        {q:"Which is greater?", options:["π","3.1"], answer:0},
+        {q:"Which is smaller?", options:["√2","1.4"], answer:1},
+        {q:"Order from greatest to least: √16, 3.9, π",
+         options:["√16, π, 3.9","π, √16, 3.9","π, 3.9, √16","3.9, π, √16"], answer:2},
+        {q:"Which number is between 2 and 3?",
+         options:["√10","√5","√12","√8"], answer:1},
+        {q:"Which is greater?", options:["7/8","0.85"], answer:1},
+        {q:"Order from least to greatest: √3, √5, 2.1",
+         options:["√3, 2.1, √5","2.1, √3, √5","√3, √5, 2.1","2.1, √5, √3"], answer:0},
+        {q:"Which is greater?", options:["√20","4.5"], answer:1},
+        {q:"Order from greatest to least: π, √11, 3.2",
+         options:["π, √11, 3.2","√11, π, 3.2","3.2, π, √11","π, 3.2, √11"], answer:0},
+        {q:"Which number is closest to 4?",
+         options:["√15","√17","3.95","π + 1"], answer:2},
+        {q:"Order from least to greatest: √2, 5/4, 1.45, √3",
+         options:["5/4, √2, 1.45, √3","√2, 5/4, 1.45, √3","√2, 1.45, 5/4, √3","5/4, 1.45, √2, √3"], answer:1},
+        {q:"Which is greater?", options:["√50","7"], answer:0}
+    ]
+},
+
+/* -------------------------------
+   TOPIC 6 — Slope
+--------------------------------*/
+{
+    topic: "Topic 6: Slope",
+    questions: [
+        {q:"What is the slope of a horizontal line?", options:["0","1","Undefined","Positive"], answer:0},
+        {q:"What is the slope of a vertical line?", options:["0","1","Undefined","Negative"], answer:2},
+        {q:"Find the slope between (0, 2) and (1, 5).", options:["1","2","3","5"], answer:2},
+        {q:"Find the slope between (2, 3) and (2, 7).", options:["0","Undefined","2","4"], answer:1},
+        {q:"Which line has a negative slope?",
+         options:["Rises left to right","Falls left to right","Horizontal line","Vertical line"], answer:1},
+        {q:"What is the slope of y = 6x – 1?", options:["–1","6","1","0"], answer:1},
+        {q:"Find the slope between (–1, 4) and (3, 12).", options:["2","3","4","8"], answer:1},
+        {q:"Find the slope between (5, –2) and (1, 6).", options:["–2","–4","2","4"], answer:1},
+        {q:"A table shows: 1→3, 2→6, 3→9. What is the slope?", options:["1","2","3","6"], answer:2},
+        {q:"A table shows: –2→7, 0→3, 2→–1. What is the slope?", options:["–1","–2","–3","–4"], answer:1},
+        {q:"A graph shows a line passing through (0, 4) and (4, 0). What is the slope?",
+         options:["–1","1","–2","2"], answer:0},
+        {q:"What is the slope of 3x + y = 9?", options:["–3","3","–1","1"], answer:0},
+        {q:"Which line has slope 1/2?",
+         options:["Rises 1 for every 2 right","Rises 2 for every 1 right","Falls 1 for every 2 right","Falls 2 for every 1 right"], answer:0},
+        {q:"Find the slope between (–3, –1) and (1, 7).", options:["1","2","3","4"], answer:2},
+        {q:"Find the slope between (–4, 5) and (2, –7).", options:["–1","–2","–3","–4"], answer:2},
+        {q:"A graph shows a line passing through (–2, –3) and (6, 5). What is the slope?",
+         options:["1","3/4","4/3","2"], answer:1},
+        {q:"A table shows: 0→10, 4→–2, 8→–14. What is the slope?", options:["–1","–2","–3","–4"], answer:1},
+        {q:"What is the slope of 5y – 20 = –15x?", options:["–3","3","–3/5","3/5"], answer:0},
+        {q:"A line has slope –4 and passes through (3, 2). Which point is also on the line?",
+         options:["(4, –2)","(4, –1)","(4, –6)","(4, –10)"], answer:0},
+        {q:"Find the slope between (a, b) and (a + 3, b – 9).", options:["–3","–9","3","9"], answer:0}
+    ]
+},
+
+/* -------------------------------
+   TOPIC 7 — Solving Multi‑Step Equations
+--------------------------------*/
+{
+    topic: "Topic 7: Solving Multi‑Step Equations",
+    questions: [
+        {q:"Solve: x + 5 = 12", options:["7"], answer:0},
+        {q:"Solve: 3x = 21", options:["6","7","8","9"], answer:1},
+        {q:"Solve: x – 9 = 4", options:["13"], answer:0},
+        {q:"Solve: x/4 = 3", options:["7","10","12","16"], answer:2},
+        {q:"Solve: 2x + 3 = 11", options:["3","4","5","6"], answer:1},
+        {q:"Solve: 5x – 2 = 18", options:["4"], answer:0},
+        {q:"Solve: 4(x + 2) = 20", options:["2","3","4","5"], answer:1},
+        {q:"Solve: 3(x – 1) = 15", options:["4","5","6","7"], answer:2},
+        {q:"Solve: 2x + 5 = 3x – 7", options:["–12","–7","7","12"], answer:0},
+        {q:"Solve: 7x – 4 = 3x + 12", options:["4"], answer:0},
+        {q:"Solve: 5(x – 3) + 2 = 17", options:["3","4","5","6"], answer:2},
+        {q:"Solve: 8x + 6 = 2x + 30", options:["3","4","5","6"], answer:2},
+        {q:"Solve: 9 – 2x = 3x + 4", options:["1","–1","–5/3","–1/3"], answer:1},
+        {q:"Solve: 6(x + 1) – 2x = 20", options:["3.5"], answer:0},
+        {q:"Solve: 4x – 7 = 2(3x – 5)", options:["3","5","–3","–5"], answer:2},
+        {q:"Solve: 5(x – 4) = 3(x + 2) + 8", options:["5","6","7","8"], answer:1},
+        {q:"Solve: 7 – 3(2x – 1) = 4x + 5", options:["1/2"], answer:0},
+        {q:"Solve: 2(x + 5) – 3(x – 2) = 4", options:["–6","–4","–2","0"], answer:2},
+        {q:"Solve: 6 – 2(x – 3) = 4(2x + 1)", options:["–1","–2","–3","–4"], answer:1},
+        {q:"Solve: 3(4x – 1) – 2(3x + 5) = 7", options:["10/3"], answer:0}
+    ]
+},
+
+/* -------------------------------
+   TOPIC 8 — Square Root Operations
+--------------------------------*/
+{
+    topic: "Topic 8: Square Root Operations",
+    questions: [
+        {q:"Simplify: √49", options:["5","6","7","8"], answer:2},
+        {q:"Simplify: √81", options:["9"], answer:0},
+        {q:"Which value is closest to √10?", options:["2","3","4","5"], answer:1},
+        {q:"Solve: x² = 25", options:["5","–5","Both 5 and –5","0"], answer:2},
+        {q:"Simplify: √16", options:["2","3","4","8"], answer:2},
+        {q:"Which is irrational?", options:["√9","√12","√25","√49"], answer:1},
+        {q:"Simplify: √75", options:["5√3","3√5","15√5","25√3"], answer:0},
+        {q:"Simplify: √20", options:["2√5","4√5","5√2","2√10"], answer:0},
+        {q:"Solve: x² = 36", options:["6","–6","Both 6 and –6","0"], answer:2},
+        {q:"Which is closest to √30?", options:["4","5","6","7"], answer:1},
+        {q:"Simplify: √45", options:["3√5","5√3","9√5","15√3"], answer:0},
+        {q:"Solve: x² = 7", options:["√7","–√7","Both A and B","7"], answer:2},
+        {q:"Simplify: √8", options:["2√2","4√2","2√4","8√2"], answer:0},
+        {q:"Which is greater?", options:["√18","4"], answer:0},
+        {q:"Simplify: √200", options:["10√2","20√2","5√8","2√50"], answer:0},
+        {q:"Solve: 3x² = 75", options:["5","–5","Both 5 and –5","25"], answer:2},
+        {q:"Simplify: √(12x²)", options:["2x√3","4x√3","x√12","6x"], answer:0},
+        {q:"Solve: 4x² – 64 = 0", options:["±4","±8","±16","0"], answer:0},
+        {q:"Which is closest to √55?", options:["6","7","8","9"], answer:1},
+        {q:"Simplify completely: √72 + √50",
+         options:["6√2 + 5√2 = 11√2","3√8 + 5√2 = 8√2","6√2 + 25√2 = 31√2","12√2 + 5√2 = 17√2"], answer:0}
+    ]
+}
+];
+
+// -------------------------------
+// RENDERING ENGINE
+// -------------------------------
+function renderTopic(index) {
+    const container = document.getElementById("topic" + (index + 1));
+    container.innerHTML = "";
+
+    const topic = quiz[index];
+    const title = document.createElement("h2");
+    title.className = "topic-title";
+    title.textContent = topic.topic;
+    container.appendChild(title);
+
+    topic.questions.forEach((qObj, qIndex) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+
+        const qText = document.createElement("div");
+        qText.className = "q-text";
+        qText.textContent = (qIndex + 1) + ". " + qObj.q;
+        qDiv.appendChild(qText);
+
+        const feedback = document.createElement("div");
+        feedback.className = "feedback";
+
+        // -----------------------------------------
+        // CASE 1: MULTIPLE OPTIONS (normal behavior)
+        // -----------------------------------------
+        if (qObj.options.length > 1) {
+            qObj.options.forEach((opt, optIndex) => {
+                const optDiv = document.createElement("div");
+                optDiv.className = "option";
+                optDiv.textContent = opt;
+
+                optDiv.onclick = () => {
+                    if (optIndex === qObj.answer) {
+                        optDiv.classList.add("correct");
+                        feedback.textContent = "Correct!";
+                        feedback.style.color = "#2e8b57";
+                    } else {
+                        optDiv.classList.add("wrong");
+                        feedback.textContent = "Wrong, try again";
+                        feedback.style.color = "#b22222";
+                    }
+                };
+
+                qDiv.appendChild(optDiv);
+            });
+        }
+
+        // ---------------------------------------------------
+        // CASE 2: ONLY ONE OPTION → HIDE ANSWER UNTIL CLICKED
+        // ---------------------------------------------------
+        else {
+            const hiddenDiv = document.createElement("div");
+            hiddenDiv.className = "option";
+            hiddenDiv.textContent = "Click to reveal answer";
+
+            hiddenDiv.onclick = () => {
+                hiddenDiv.classList.add("correct");
+                hiddenDiv.textContent = qObj.options[0];  // reveal the real answer
+                feedback.textContent = "Correct!";
+                feedback.style.color = "#2e8b57";
+            };
+
+            qDiv.appendChild(hiddenDiv);
+        }
+
+        qDiv.appendChild(feedback);
+        container.appendChild(qDiv);
+    });
+}
+// -------------------------------
+// PAGE NAVIGATION
+// -------------------------------
+let currentPage = 0;
+
+function showPage(n) {
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    document.getElementById("topic" + (n + 1)).style.display = "block";
+}
+
+function nextPage() {
+    if (currentPage < 7) currentPage++;
+    showPage(currentPage);
+}
+
+function prevPage() {
+    if (currentPage > 0) currentPage--;
+    showPage(currentPage);
+}
+
+// -------------------------------
+// INITIALIZE (after Parts 2–4 load quiz data)
+// -------------------------------
+function initializeQuiz() {
+    for (let i = 0; i < quiz.length; i++) {
+        renderTopic(i);
+    }
+    showPage(0);
+}
+
+initializeQuiz();
+
+</script>
+
+</body>
+</html>
