@@ -128,6 +128,10 @@ def quizPage1():
 def quizPage2():
     return render_template('algebra_quiz2.html')
 
+@app.route("/invite.html", methods=['GET'])
+def bDayInvite():
+    return render_template('invite.html')
+
 @app.route("/", methods=['GET'])
 def indexPage():
     return render_template('index.html')
