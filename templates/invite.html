@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Aahan’s Space Birthday Mission</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060f;
+      --card: rgba(255, 255, 255, .06);
+      --line: rgba(255, 255, 255, .14);
+      --text: #eef1ff;
+      --muted: #a9b0d6;
+      --a: #7c5cff;
+      --b: #00e0ff;
+      --c: #ff5cc8;
+      color-scheme: dark;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #05060f;
+        --text: #eef1ff
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #05060f;
+      --text: #eef1ff
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px)
+    }
+
+    body {
+      background: radial-gradient(1200px 700px at 80% -10%, #2a1a6e55, transparent), radial-gradient(900px 600px at -10% 40%, #00a0c033, transparent), var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', system-ui, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    #stars {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      text-align: center
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: .72rem;
+      letter-spacing: .3em;
+      color: var(--b);
+      border: 1px solid var(--line);
+      padding: 8px 16px;
+      border-radius: 99px;
+      background: var(--card);
+      backdrop-filter: blur(8px)
+    }
+
+    .hero {
+      position: relative;
+      height: 260px;
+      margin: 10px auto 0
+    }
+
+    .astro {
+      width: 230px;
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      margin-left: -115px;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 20px 40px #7c5cff66)
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-4deg)
+      }
+
+      50% {
+        transform: translateY(-18px) rotate(4deg)
+      }
+    }
+
+    .planet {
+      position: absolute;
+      border-radius: 50%
+    }
+
+    .p1 {
+      width: 70px;
+      height: 70px;
+      left: 6%;
+      top: 30px;
+      background: radial-gradient(circle at 30% 30%, #ffb36b, #c8421f);
+      box-shadow: 0 0 40px #ff7a3a55;
+      animation: float 8s ease-in-out infinite
+    }
+
+    .p2 {
+      width: 46px;
+      height: 46px;
+      right: 8%;
+      top: 150px;
+      background: radial-gradient(circle at 30% 30%, #8ff, #2a6cff);
+      box-shadow: 0 0 30px #00e0ff55;
+      animation: float 7s ease-in-out infinite reverse
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 9vw, 4.2rem);
+      line-height: 1.05;
+      background: linear-gradient(90deg, var(--b), var(--a), var(--c));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-top: 6px
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 1.02rem
+    }
+
+    .age {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      margin-top: 14px;
+      color: var(--text)
+    }
+
+    .age b {
+      font-size: 1.6rem;
+      color: var(--c)
+    }
+
+    .msg {
+      margin: 26px auto 0;
+      max-width: 560px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      line-height: 1.7
+    }
+
+    .count {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 26px
+    }
+
+    .u {
+      min-width: 70px;
+      padding: 12px 8px;
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--line)
+    }
+
+    .u b {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.6rem
+    }
+
+    .u span {
+      font-size: .65rem;
+      letter-spacing: .2em;
+      color: var(--muted);
+      text-transform: uppercase
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 26px;
+      text-align: left
+    }
+
+    .box {
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid var(--line)
+    }
+
+    .box small {
+      font-family: 'Orbitron', sans-serif;
+      font-size: .65rem;
+      letter-spacing: .25em;
+      color: var(--b)
+    }
+
+    .box p {
+      margin-top: 6px;
+      font-weight: 500;
+      line-height: 1.5
+    }
+
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 99px;
+      font-weight: 600;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg, var(--a), var(--c));
+      box-shadow: 0 10px 30px #7c5cff55;
+      transition: transform .2s
+    }
+
+    .btn.alt {
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: none
+    }
+
+    .btn:hover {
+      transform: translateY(-3px)
+    }
+
+    @media (max-width:380px) {
+      .count {
+        gap: 6px
+      }
+
+      .u {
+        min-width: 0;
+        flex: 1;
+        padding: 10px 4px
+      }
+
+      .u b {
+        font-size: 1.3rem
+      }
+
+      .astro {
+        width: 190px;
+        margin-left: -95px
+      }
+
+      .hero {
+        height: 230px
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center
+      }
+    }
+
+    .btn {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    footer {
+      margin-top: 34px;
+      color: var(--muted);
+      font-size: .85rem
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="stars"></canvas>
+  <main>
+    <span class="tag">MISSION BRIEFING · BIRTHDAY LAUNCH</span>
+    <div class="hero">
+      <div class="planet p1"></div>
+      <div class="planet p2"></div>
+      <svg class="astro" viewBox="0 0 200 240" aria-label="Floating astronaut">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fff" />
+            <stop offset="1" stop-color="#c9d0ff" />
+          </linearGradient>
+          <linearGradient id="v" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2b1f7a" />
+            <stop offset="1" stop-color="#00b7e0" />
+          </linearGradient>
+        </defs>
+        <rect x="40" y="95" width="30" height="80" rx="12" fill="#8d96d6" />
+        <rect x="62" y="90" width="76" height="90" rx="26" fill="url(#g)" />
+        <rect x="78" y="120" width="44" height="26" rx="8" fill="#7c5cff" />
+        <circle cx="90" cy="133" r="4" fill="#00e0ff" />
+        <circle cx="108" cy="133" r="4" fill="#ff5cc8" />
+        <rect x="30" y="100" width="40" height="22" rx="11" fill="url(#g)" transform="rotate(-25 50 111)" />
+        <rect x="132" y="104" width="40" height="22" rx="11" fill="url(#g)" transform="rotate(30 150 115)" />
+        <rect x="66" y="170" width="28" height="48" rx="12" fill="url(#g)" />
+        <rect x="106" y="170" width="28" height="48" rx="12" fill="url(#g)" />
+        <rect x="64" y="208" width="32" height="16" rx="8" fill="#ff5cc8" />
+        <rect x="104" y="208" width="32" height="16" rx="8" fill="#ff5cc8" />
+        <circle cx="100" cy="62" r="50" fill="url(#g)" />
+        <rect x="64" y="38" width="72" height="50" rx="24" fill="url(#v)" />
+        <ellipse cx="82" cy="52" rx="10" ry="6" fill="#fff" opacity=".45" />
+        <text x="100" y="160" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="14" font-weight="800"
+          fill="#05060f" transform="translate(0,-8)">12</text>
+      </svg>
+    </div>
+    <p class="sub">Commander in training</p>
+    <h1>AAHAN NAYAK</h1>
+    <p class="age">is turning <b>12</b> · 18 November</p>
+
+    <div class="msg">
+      Hey space explorer! 🚀 Aahan is blasting off into his 12th year and wants his crew on board.
+      Join us at home for cake, games and cosmic fun. Suit up and don’t be late. The countdown has begun!
+    </div>
+
+    <div class="count" id="count" aria-live="off">
+      <div class="u"><b id="d">00</b><span>Days</span></div>
+      <div class="u"><b id="h">00</b><span>Hrs</span></div>
+      <div class="u"><b id="m">00</b><span>Min</span></div>
+      <div class="u"><b id="s">00</b><span>Sec</span></div>
+    </div>
+
+    <div class="grid">
+      <div class="box"><small>DATE</small>
+        <p>Wednesday,<br>18 November 2026</p>
+      </div>
+      <div class="box"><small>LAUNCH WINDOW</small>
+        <p>4:30 PM – 5:30 PM</p>
+      </div>
+      <div class="box"><small>LANDING SITE</small>
+        <p id="addr"></p>
+      </div>
+    </div>
+
+    <div class="btns">
+      <a class="btn" id="map" target="_blank" rel="noopener">📍 Open in Maps</a>
+      <a class="btn alt" id="cal" target="_blank" rel="noopener">📅 Add to Calendar</a>
+      <a class="btn alt" id="rsvp" target="_blank" rel="noopener">✅ RSVP</a>
+    </div>
+    <footer>Mission control: Aahan’s family · See you among the stars ✨</footer>
+  </main>
+  <script>
+    // ✏️ EDIT THESE DETAILS
+    const ADDRESS = "363 Parsonage Rd, Edison, NJ 08837";
+    const RSVP_PHONE = "15717767305";
+
+    document.getElementById('addr').textContent = ADDRESS;
+    document.getElementById('map').href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(ADDRESS);
+    document.getElementById('cal').href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent("Aahan’s 12th Birthday Party") + "&dates=20261118T163000/20261118T173000&location=" + encodeURIComponent(ADDRESS);
+    document.getElementById('rsvp').href = "https://wa.me/" + RSVP_PHONE + "?text=" + encodeURIComponent("Hi! I’ll be at Aahan’s birthday party on 18 Nov 🚀");
+
+    const target = new Date(2026, 10, 18, 16, 30).getTime();
+    const pad = n => String(n).padStart(2, '0');
+    function tick() {
+      let t = target - Date.now();
+      if (t <= 0) { document.getElementById('count').innerHTML = '<div class="u" style="padding:14px 24px"><b style="font-size:1.1rem">🚀 Mission launched!</b></div>'; return; }
+      document.getElementById('d').textContent = pad(Math.floor(t / 864e5));
+      document.getElementById('h').textContent = pad(Math.floor(t / 36e5) % 24);
+      document.getElementById('m').textContent = pad(Math.floor(t / 6e4) % 60);
+      document.getElementById('s').textContent = pad(Math.floor(t / 1e3) % 60);
+      setTimeout(tick, 1000);
+    }
+    tick();
+
+    const cv = document.getElementById('stars'), x = cv.getContext('2d');
+    let W, H, stars = [];
+    function size() { W = cv.width = innerWidth; H = cv.height = innerHeight; stars = Array.from({ length: Math.floor(W * H / 5000) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.5 + .2, s: Math.random() * .4 + .05, p: Math.random() * 6 })); }
+    addEventListener('resize', size); size();
+    let shoot = null;
+    (function draw(t) {
+      x.clearRect(0, 0, W, H);
+      for (const s of stars) { s.y += s.s * .3; if (s.y > H) s.y = 0; x.globalAlpha = .5 + .5 * Math.sin(t / 700 + s.p); x.fillStyle = '#fff'; x.beginPath(); x.arc(s.x, s.y, s.r, 0, 7); x.fill(); }
+      if (!shoot && Math.random() < .004) shoot = { x: Math.random() * W, y: Math.random() * H * .4, l: 0 };
+      if (shoot) { shoot.x += 12; shoot.y += 6; shoot.l++; x.globalAlpha = 1 - shoot.l / 40; x.strokeStyle = '#9fe9ff'; x.lineWidth = 2; x.beginPath(); x.moveTo(shoot.x, shoot.y); x.lineTo(shoot.x - 70, shoot.y - 35); x.stroke(); if (shoot.l > 40) shoot = null; }
+      requestAnimationFrame(draw);
+    })(0);
+  </script>
+</body>
+
+</html>
