@@ -132,6 +132,10 @@ def quizPage2():
 def bDayInvite():
     return render_template('invite.html')
 
+@app.route("/bingo.html", methods=['GET'])
+def bDayInvite():
+    return render_template('bingo-new.html')
+
 @app.route("/", methods=['GET'])
 def indexPage():
     return render_template('index.html')
