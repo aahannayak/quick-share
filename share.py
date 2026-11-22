@@ -133,7 +133,7 @@ def bDayInvite():
     return render_template('invite.html')
 
 @app.route("/bingo.html", methods=['GET'])
-def bDayInvite():
+def bingo():
     return render_template('bingo-new.html')
 
 @app.route("/", methods=['GET'])
