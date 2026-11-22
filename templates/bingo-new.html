@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Kids Bingo Caller & Printable Cards</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --success-hover: #059669;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 14px;
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    /* Top Header & Action Bar */
+    .top-bar {
+      background: var(--surface);
+      padding: 18px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      font-weight: 800;
+      padding: 8px 12px;
+      border-radius: 10px;
+      letter-spacing: 2px;
+      font-size: 1rem;
+    }
+
+    .brand h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .brand p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 16px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button:active { transform: scale(0.98); }
+
+    .btn-primary { background: var(--primary); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+    .btn-print { background: var(--success); }
+    .btn-print:hover { background: var(--success-hover); }
+
+    .btn-secondary { background: #475569; }
+    .btn-secondary:hover { background: #334155; }
+
+    .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: var(--danger-hover); }
+
+    /* Game Settings Bar */
+    .settings-bar {
+      background: var(--surface);
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .setting-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .setting-group input,
+    .setting-group select {
+      padding: 7px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      background: #f8fafc;
+    }
+
+    .setting-group input[type="number"] {
+      width: 72px;
+      text-align: center;
+    }
+
+    .settings-note {
+      margin-left: auto;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Winner Banner */
+    .winner-banner {
+      display: none;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+      color: #92400e;
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      animation: popIn 0.3s ease;
+    }
+
+    .winner-banner.active {
+      display: flex;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .winner-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .winner-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .winner-tag {
+      background: #92400e;
+      color: #fef3c7;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    /* Caller Dashboard */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 780px) {
+      .dashboard { grid-template-columns: 1fr; }
+    }
+
+    .caller-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .caller-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .ball-display {
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #6366f1, #3730a3);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.4rem;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+      margin-bottom: 18px;
+      border: 4px solid #e0e7ff;
+    }
+
+    .btn-draw {
+      width: 100%;
+      justify-content: center;
+      font-size: 1.05rem;
+      padding: 13px 20px;
+    }
+
+    .draw-counter {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .board-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .board-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .number-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      gap: 6px;
+    }
+    .board-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: #f8fafc;
+      color: #94a3b8;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s;
+    }
+
+    .board-cell.drawn {
+      background: #e0e7ff;
+      color: #3730a3;
+      border-color: #a5b4fc;
+    }
+
+    .board-cell.latest {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary-hover);
+      transform: scale(1.08);
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+
+    .history-strip {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .history-strip strong {
+      color: var(--text);
+    }
+
+    /* Printable Cards Area */
+    .cards-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .cards-toolbar h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .print-page {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 720px) {
+      .print-page { grid-template-columns: 1fr; }
+    }
+
+    .bingo-card {
+      background: var(--surface);
+      border: 3px solid #1e293b;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .bingo-card.winner-card {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .card-logo {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--primary);
+    }
+
+    .card-meta {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #334155;
+    }
+    .winner-pill {
+      display: none;
+      background: #f59e0b;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+
+    .bingo-card.winner-card .winner-pill {
+      display: inline-block;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 7px;
+    }
+
+    .grid-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      font-weight: 800;
+      color: var(--text);
+      background: white;
+      transition: all 0.15s;
+    }
+
+    .grid-cell.size-3 { font-size: 1.85rem; }
+    .grid-cell.size-4 { font-size: 1.45rem; }
+    .grid-cell.size-5 { font-size: 1.15rem; }
+
+    .grid-cell.matched {
+      background: #fef08a;
+      border-color: #ca8a04;
+      color: #854d0e;
+    }
+
+    .grid-cell.winning-line {
+      background: #fde047;
+      border-color: #ea580c;
+      color: #7c2d12;
+      box-shadow: inset 0 0 0 2px #f97316;
+    }
+
+    /* Print Layout: Strictly 4 Cards Per Page */
+    @media print {
+      @page {
+        size: portrait;
+        margin: 0.4in;
+      }
+
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .print-page {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        gap: 0.35in !important;
+        height: 9.8in;
+        page-break-after: always;
+        break-after: page;
+        margin-bottom: 0;
+      }
+
+      .print-page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .bingo-card {
+        box-shadow: none !important;
+        border: 2.5px solid #000 !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 14px;
+      }
+      .winner-pill {
+        display: none !important;
+      }
+
+      .grid-cell {
+        border: 2px solid #000 !important;
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header class="top-bar no-print">
+    <div class="brand">
+      <div class="brand-badge">BINGO</div>
+      <div>
+        <h1>Kids Bingo Studio</h1>
+        <p>Live caller, automatic winner detection &amp; 4-per-page printables</p>
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="btn-print" onclick="window.print()">Print Cards (4 / page)</button>
+      <button class="btn-secondary" onclick="regenerateCards()">New Cards</button>
+      <button class="btn-danger" onclick="resetDrawn()">Reset Round</button>
+    </div>
+  </header>
+
+  <!-- Settings Bar -->
+  <section class="settings-bar no-print">
+    <div class="setting-group">
+      <label for="participantInput">Participants:</label>
+      <input type="number" id="participantInput" min="1" max="100" value="12" onchange="handleSettingsChange()">
+    </div>
+    <div class="setting-group">
+      <label for="gridSizeSelect">Bingo Grid:</label>
+      <select id="gridSizeSelect" onchange="handleSettingsChange()">
+        <option value="3">3 x 3 (9 numbers)</option>
+        <option value="4" selected>4 x 4 (16 numbers)</option>
+        <option value="5">5 x 5 (25 numbers)</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <label for="minNumInput">Series:</label>
+      <input type="number" id="minNumInput" min="1" max="900" value="1" onchange="handleSettingsChange()">
+      <span>to</span>
+      <input type="number" id="maxNumInput" min="9" max="999" value="40" onchange="handleSettingsChange()">
+    </div>
+    <div class="settings-note" id="seriesNote">Pool: 40 numbers</div>
+  </section>
+
+  <!-- Winner Notification Banner -->
+  <section class="winner-banner no-print" id="winnerBanner">
+    <div class="winner-title">BINGO! We have a winner!</div>
+    <div class="winner-tags" id="winnerTags"></div>
+  </section>
+
+  <!-- Caller Dashboard -->
+  <section class="dashboard no-print">
+    <div class="caller-card">
+      <div class="caller-label">Current Ball</div>
+      <div class="ball-display" id="currentBall">--</div>
+      <button class="btn-primary btn-draw" id="drawBtn" onclick="drawNumber()">Draw Next Number</button>
+      <div class="draw-counter" id="drawCounter">0 of 40 called</div>
+    </div>
+
+    <div class="board-card">
+      <div>
+        <div class="board-header">
+          <h2 id="boardTitle">Number Board (1–40)</h2>
+          <span style="font-size: 0.85rem; color: var(--muted);" id="remainingCount">40 remaining</span>
+        </div>
+        <div class="number-board" id="numberBoard"></div>
+      </div>
+      <div class="history-strip">
+        <strong>Called Order:</strong> <span id="calledHistory">Waiting for first draw...</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Printable Cards -->
+  <section>
+    <div class="cards-toolbar no-print">
+      <h2 id="cardsHeading">12 Participant Cards (4x4)</h2>
+      <span id="printSummary" style="font-size: 0.9rem; color: var(--muted);">3 pages when printed (4 cards per page)</span>
+    </div>
+    <div id="cardsContainer"></div>
+  </section>
+</div>
+<script>
+  const STORAGE_KEY = 'kids_bingo_studio_state_v3';
+
+  let state = {
+    participants: 12,
+    gridSize: 4,
+    minNum: 1,
+    maxNum: 40,
+    drawn: [],
+    cards: []
+  };
+
+  function getNumberPool() {
+    const pool = [];
+    for (let n = state.minNum; n <= state.maxNum; n++) {
+      pool.push(n);
+    }
+    return pool;
+  }
+
+  function createCardNumbers(gridSize, minNum, maxNum) {
+    const needed = gridSize * gridSize;
+    const pool = [];
+    for (let n = minNum; n <= maxNum; n++) {
+      pool.push(n);
+    }
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, needed);
+  }
+
+  function generateCardsList(count, gridSize, minNum, maxNum) {
+    const list = [];
+    for (let i = 0; i < count; i++) {
+      list.push({
+        id: i + 1,
+        numbers: createCardNumbers(gridSize, minNum, maxNum)
+      });
+    }
+    return list;
+  }
+
+  function ensureCardCount(targetCount) {
+    while (state.cards.length < targetCount) {
+      state.cards.push({
+        id: state.cards.length + 1,
+        numbers: createCardNumbers(state.gridSize, state.minNum, state.maxNum)
+      });
+    }
+  }
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function loadState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.cards) && Array.isArray(parsed.drawn)) {
+          state = {
+            participants: parsed.participants || 12,
+            gridSize: parsed.gridSize || 4,
+            minNum: parsed.minNum ?? 1,
+            maxNum: parsed.maxNum ?? 40,
+            drawn: parsed.drawn,
+            cards: parsed.cards
+          };
+          ensureCardCount(state.participants);
+          return;
+        }
+      } catch (err) {
+        console.error('Error loading saved Bingo state:', err);
+      }
+    }
+    state.cards = generateCardsList(state.participants, state.gridSize, state.minNum, state.maxNum);
+    saveState();
+  }
+
+  function handleSettingsChange() {
+    let newParticipants = parseInt(document.getElementById('participantInput').value, 10);
+    const newGridSize = parseInt(document.getElementById('gridSizeSelect').value, 10);
+    let newMin = parseInt(document.getElementById('minNumInput').value, 10);
+    let newMax = parseInt(document.getElementById('maxNumInput').value, 10);
+
+    if (isNaN(newParticipants) || newParticipants < 1) newParticipants = 1;
+    if (newParticipants > 100) newParticipants = 100;
+
+    if (isNaN(newMin) || newMin < 1) newMin = 1;
+    const requiredCells = newGridSize * newGridSize;
+    if (isNaN(newMax) || newMax - newMin + 1 < requiredCells) {
+      newMax = newMin + requiredCells - 1;
+      alert(`Series range adjusted to ${newMin}–${newMax} so there are at least ${requiredCells} unique numbers for a ${newGridSize}x${newGridSize} grid.`);
+    }
+    const gridOrRangeChanged = (
+      newGridSize !== state.gridSize ||
+      newMin !== state.minNum ||
+      newMax !== state.maxNum
+    );
+
+    state.participants = newParticipants;
+    state.gridSize = newGridSize;
+    state.minNum = newMin;
+    state.maxNum = newMax;
+
+    if (gridOrRangeChanged) {
+      state.drawn = [];
+      state.cards = generateCardsList(state.participants, state.gridSize, state.minNum, state.maxNum);
+    } else {
+      ensureCardCount(state.participants);
+    }
+
+    saveState();
+    render();
+  }
+
+  function drawNumber() {
+    const pool = getNumberPool();
+    const remaining = pool.filter(n => !state.drawn.includes(n));
+    if (remaining.length === 0) return;
+
+    const picked = remaining[Math.floor(Math.random() * remaining.length)];
+    state.drawn.push(picked);
+    saveState();
+    render();
+  }
+
+  function resetDrawn() {
+    if (state.drawn.length === 0) return;
+    if (confirm('Clear all drawn numbers and start a fresh round? (Cards remain unchanged)')) {
+      state.drawn = [];
+      saveState();
+      render();
+    }
+  }
+
+  function regenerateCards() {
+    if (confirm('Generate brand new cards for all participants? This will also reset drawn numbers.')) {
+      state.drawn = [];
+      state.cards = generateCardsList(state.participants, state.gridSize, state.minNum, state.maxNum);
+      saveState();
+      render();
+    }
+  }
+
+  function evaluateCard(card, gridSize, drawnSet) {
+    const winningIndices = new Set();
+    let lineCount = 0;
+
+    // Check rows
+    for (let r = 0; r < gridSize; r++) {
+      const rowIndices = [];
+      for (let c = 0; c < gridSize; c++) {
+        rowIndices.push(r * gridSize + c);
+      }
+      if (rowIndices.every(idx => drawnSet.has(card.numbers[idx]))) {
+        lineCount++;
+        rowIndices.forEach(idx => winningIndices.add(idx));
+      }
+    }
+
+    // Check columns
+    for (let c = 0; c < gridSize; c++) {
+      const colIndices = [];
+      for (let r = 0; r < gridSize; r++) {
+        colIndices.push(r * gridSize + c);
+      }
+      if (colIndices.every(idx => drawnSet.has(card.numbers[idx]))) {
+        lineCount++;
+        colIndices.forEach(idx => winningIndices.add(idx));
+      }
+    }
+
+    // Check main diagonal
+    const diag1 = [];
+    for (let i = 0; i < gridSize; i++) {
+      diag1.push(i * gridSize + i);
+    }
+    if (diag1.every(idx => drawnSet.has(card.numbers[idx]))) {
+      lineCount++;
+      diag1.forEach(idx => winningIndices.add(idx));
+    }
+
+    // Check anti-diagonal
+    const diag2 = [];
+    for (let i = 0; i < gridSize; i++) {
+      diag2.push(i * gridSize + (gridSize - 1 - i));
+    }
+    if (diag2.every(idx => drawnSet.has(card.numbers[idx]))) {
+      lineCount++;
+      diag2.forEach(idx => winningIndices.add(idx));
+    }
+
+    return {
+      isWinner: lineCount > 0,
+      lineCount,
+      winningIndices
+    };
+  }
+
+  function render() {
+    // Sync inputs
+    document.getElementById('participantInput').value = state.participants;
+    document.getElementById('gridSizeSelect').value = String(state.gridSize);
+    document.getElementById('minNumInput').value = state.minNum;
+    document.getElementById('maxNumInput').value = state.maxNum;
+
+    const pool = getNumberPool();
+    const drawnSet = new Set(state.drawn);
+    const latest = state.drawn.length > 0 ? state.drawn[state.drawn.length - 1] : '--';
+
+    document.getElementById('seriesNote').textContent = `Pool: ${pool.length} numbers`;
+    document.getElementById('currentBall').textContent = latest;
+    document.getElementById('drawCounter').textContent = `${state.drawn.length} of ${pool.length} called`;
+
+    const drawBtn = document.getElementById('drawBtn');
+    drawBtn.disabled = state.drawn.length >= pool.length;
+    drawBtn.textContent = state.drawn.length >= pool.length ? 'All Numbers Called' : 'Draw Next Number';
+
+    // Render Number Board
+    document.getElementById('boardTitle').textContent = `Number Board (${state.minNum}–${state.maxNum})`;
+    document.getElementById('remainingCount').textContent = `${pool.length - state.drawn.length} remaining`;
+
+    const numberBoard = document.getElementById('numberBoard');
+    numberBoard.innerHTML = '';
+    pool.forEach(num => {
+      const cell = document.createElement('div');
+      cell.className = 'board-cell';
+      if (drawnSet.has(num)) cell.classList.add('drawn');
+      if (num === latest) cell.classList.add('latest');
+      cell.textContent = num;
+      numberBoard.appendChild(cell);
+    });
+
+    // Render History
+    const historyEl = document.getElementById('calledHistory');
+    historyEl.textContent = state.drawn.length > 0 ? state.drawn.join(', ') : 'Waiting for first draw...';
+
+    // Evaluate Active Cards & Winners
+    const activeCards = state.cards.slice(0, state.participants);
+    const winners = [];
+
+    const totalPages = Math.ceil(activeCards.length / 4);
+    document.getElementById('cardsHeading').textContent = `${activeCards.length} Participant Card${activeCards.length === 1 ? '' : 's'} (${state.gridSize}x${state.gridSize})`;
+    document.getElementById('printSummary').textContent = `${totalPages} page${totalPages === 1 ? '' : 's'} when printed (4 cards per page)`;
+
+    const cardsContainer = document.getElementById('cardsContainer');
+    cardsContainer.innerHTML = '';
+
+    for (let pageStart = 0; pageStart < activeCards.length; pageStart += 4) {
+      const pageDiv = document.createElement('div');
+      pageDiv.className = 'print-page';
+
+      const slice = activeCards.slice(pageStart, pageStart + 4);
+      slice.forEach(card => {
+        const result = evaluateCard(card, state.gridSize, drawnSet);
+        if (result.isWinner) {
+          winners.push({ id: card.id, lines: result.lineCount });
+        }
+
+        const cardEl = document.createElement('div');
+        cardEl.className = 'bingo-card' + (result.isWinner ? ' winner-card' : '');
+
+        const header = document.createElement('div');
+        header.className = 'card-header';
+        header.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="card-logo">BINGO</span>
+            <span class="winner-pill">BINGO!</span>
+          </div>
+          <span class="card-meta">Player #${card.id} &nbsp;|&nbsp; Name: ___________</span>
+        `;
+
+        const grid = document.createElement('div');
+        grid.className = 'card-grid';
+        grid.style.gridTemplateColumns = `repeat(${state.gridSize}, 1fr)`;
+
+        card.numbers.forEach((num, idx) => {
+          const cell = document.createElement('div');
+          cell.className = `grid-cell size-${state.gridSize}`;
+          if (drawnSet.has(num)) {
+            cell.classList.add('matched');
+          }
+          if (result.winningIndices.has(idx)) {
+            cell.classList.add('winning-line');
+          }
+          cell.textContent = num;
+          grid.appendChild(cell);
+        });
+
+        cardEl.appendChild(header);
+        cardEl.appendChild(grid);
+        pageDiv.appendChild(cardEl);
+      });
+
+      cardsContainer.appendChild(pageDiv);
+    }
+
+    // Update Winner Banner
+    const winnerBanner = document.getElementById('winnerBanner');
+    const winnerTags = document.getElementById('winnerTags');
+    if (winners.length > 0) {
+      winnerBanner.classList.add('active');
+      winnerTags.innerHTML = winners
+        .map(w => `<span class="winner-tag">Player #${w.id} (${w.lines} line${w.lines === 1 ? '' : 's'})</span>`)
+        .join('');
+    } else {
+      winnerBanner.classList.remove('active');
+      winnerTags.innerHTML = '';
+    }
+  }
+
+  // Boot app
+  loadState();
+  render();
+</script>
+
+</body>
+</html>
+
